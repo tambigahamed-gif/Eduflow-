@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { BookOpen, ChevronDown, GraduationCap, LogOut, Menu, X } from 'lucide-react';
+import { BookOpen, ChevronDown, GraduationCap, Link2, LogOut, Menu, X } from 'lucide-react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Brand } from '../components/Brand';
 import { useAuth } from '../app/AuthContext';
 import { supabase } from '../lib/supabase';
+import type { AppRole } from '../types/database';
+
+const roleHome: Record<AppRole, string> = { student: '/dashboard', parent: '/parent/dashboard', teacher: '/teacher/dashboard', admin: '/admin' };
+const roleLabel: Record<AppRole, string> = { student: 'Élève', parent: 'Parent', teacher: 'Enseignant', admin: 'Administration' };
 
 export function StudentLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
-  const { profile } = useAuth();
+  const { profile, roles } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -38,6 +42,10 @@ export function StudentLayout() {
             <span className="coming-link"><GraduationCap size={18} /> Cours et matières</span>
             <span className="coming-pill">À venir</span>
           </div>
+          <span className="sidebar-label">FAMILLE</span>
+          <NavLink to="/student/parent-links" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}>
+            <Link2 size={18} /> Liaisons parentales
+          </NavLink>
         </nav>
         <div className="sidebar-bottom">
           <div className="sidebar-support-card">
@@ -60,6 +68,7 @@ export function StudentLayout() {
           <button className="student-menu-toggle" type="button" onClick={() => setMenuOpen(true)} aria-label="Ouvrir la navigation"><Menu size={21} /></button>
           <Link className="student-mobile-brand" to="/dashboard"><Brand compact /></Link>
           <span className="topbar-context">Mon espace d’apprentissage</span>
+          {roles.length > 1 && <label className="student-role-switch"><span className="sr-only">Changer d’espace EduFlow</span><select aria-label="Changer d’espace EduFlow" value="student" onChange={(event) => navigate(roleHome[event.target.value as AppRole])}>{(['student', 'parent', 'teacher', 'admin'] as AppRole[]).filter((role) => roles.includes(role)).map((role) => <option key={role} value={role}>{roleLabel[role]}</option>)}</select></label>}
           <Link className="topbar-avatar" to="/dashboard" aria-label={`Compte de ${profile?.first_name || 'l’élève'}`}>
             {(profile?.first_name?.[0] ?? 'E').toUpperCase()}
           </Link>

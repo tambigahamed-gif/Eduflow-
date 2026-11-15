@@ -21,7 +21,7 @@ export type StudentProfileSummary = {
 type AccountSnapshot = {
   userId: string;
   profile: UserProfile | null;
-  role: AppRole | null;
+  roles: AppRole[];
   studentProfile: StudentProfileSummary | null;
   error: string | null;
 };
@@ -30,7 +30,10 @@ type AuthContextValue = {
   session: Session | null;
   user: Session['user'] | null;
   profile: UserProfile | null;
+  /** Primary role for display only. Guards must use roles/hasRole because accounts may hold several roles. */
   role: AppRole | null;
+  roles: AppRole[];
+  hasRole: (role: AppRole) => boolean;
   studentProfile: StudentProfileSummary | null;
   loading: boolean;
   accountLoading: boolean;
@@ -39,6 +42,8 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const rolePriority: AppRole[] = ['admin', 'teacher', 'parent', 'student'];
+const EMPTY_ROLES: AppRole[] = [];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -48,10 +53,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const userId = session?.user.id ?? null;
   const snapshotIsCurrent = Boolean(userId && accountSnapshot?.userId === userId);
   const profile = snapshotIsCurrent ? accountSnapshot?.profile ?? null : null;
-  const role = snapshotIsCurrent ? accountSnapshot?.role ?? null : null;
+  const roles = snapshotIsCurrent ? accountSnapshot?.roles ?? EMPTY_ROLES : EMPTY_ROLES;
+  const role = rolePriority.find((candidate) => roles.includes(candidate)) ?? null;
   const studentProfile = snapshotIsCurrent ? accountSnapshot?.studentProfile ?? null : null;
   const accountLoading = Boolean(userId && !snapshotIsCurrent);
   const accountError = sessionError ?? (snapshotIsCurrent ? accountSnapshot?.error ?? null : null);
+  const hasRole = useCallback((candidate: AppRole) => roles.includes(candidate), [roles]);
 
   const loadAccount = useCallback(async (requestedUserId: string) => {
     const client = supabase;
@@ -59,22 +66,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const [profileResult, roleResult, studentResult] = await Promise.all([
         client.from('profiles').select('first_name,last_name,avatar_url').eq('user_id', requestedUserId).maybeSingle(),
-        client.from('user_roles').select('role').eq('user_id', requestedUserId).maybeSingle(),
+        client.from('user_roles').select('role').eq('user_id', requestedUserId),
         client.from('student_profiles').select('user_id,education_system_id,school_level_id,class_id,series_id').eq('user_id', requestedUserId).maybeSingle(),
       ]);
       const hasError = Boolean(profileResult.error || roleResult.error || studentResult.error);
       setAccountSnapshot({
         userId: requestedUserId,
         profile: profileResult.data,
-        role: roleResult.data?.role ?? null,
+        roles: (roleResult.data ?? []).map((row) => row.role),
         studentProfile: studentResult.data,
-        error: hasError ? 'Le profil EduFlow n’est pas encore disponible. Vérifie que la migration Phase 1 est appliquée dans Supabase.' : null,
+        error: hasError ? 'Le profil EduFlow n’est pas encore disponible. Vérifie que les migrations nécessaires sont appliquées dans Supabase.' : null,
       });
     } catch {
       setAccountSnapshot({
         userId: requestedUserId,
         profile: null,
-        role: null,
+        roles: [],
         studentProfile: null,
         error: 'Le profil EduFlow ne peut pas être chargé pour le moment. Vérifie la connexion et réessaie.',
       });
@@ -94,7 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const scheduleAccountLoad = (requestedUserId: string) => {
       if (accountTimer !== undefined) window.clearTimeout(accountTimer);
       accountTimer = window.setTimeout(() => {
-        void loadAccount(requestedUserId);
+        if (active) void loadAccount(requestedUserId);
       }, 0);
     };
 
@@ -126,8 +133,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [loadAccount]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ session, user: session?.user ?? null, profile, role, studentProfile, loading, accountLoading, accountError, refreshAccount }),
-    [session, profile, role, studentProfile, loading, accountLoading, accountError, refreshAccount],
+    () => ({ session, user: session?.user ?? null, profile, role, roles, hasRole, studentProfile, loading, accountLoading, accountError, refreshAccount }),
+    [session, profile, role, roles, hasRole, studentProfile, loading, accountLoading, accountError, refreshAccount],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

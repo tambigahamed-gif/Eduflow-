@@ -1,36 +1,73 @@
-# EduFlow — Suivi Phase 1
+# EduFlow — Suivi des phases 1 et 2
 
-Les critères ci-dessous proviennent de la demande utilisateur validée. Une case n’est cochée qu’une fois le comportement réellement livré et vérifié. Périmètre strict : Phase 1; arrêter et demander la validation avant toute Phase 2.
+Les critères et statuts de Phase 1 ci-dessous sont conservés comme historique. La Phase 2 est maintenant autorisée; ne développer que son périmètre, et ne pas passer aux phases suivantes. Chaque case ne sera cochée qu’après livraison et vérification du comportement concerné.
 
-## Identité visuelle et site public — livré
+## Phase 1 — Fondations (historique conservé)
+
+### Identité visuelle et site public — livré
 
 - [x] « Mets en place l'identité visuelle EduFlow et une interface professionnelle, moderne et responsive, avec priorité aux smartphones. » Utiliser le logo fourni, les couleurs et principes du cahier des charges; veiller à la cohérence mobile, tablette et ordinateur. **Vérifié visuellement aux formats smartphone, tablette et ordinateur.**
 - [x] « Développe la page d'accueil publique complète. » Inclure les sections d’accueil prévues au cahier (présentation, fonctionnalités de la plateforme, EduAI présenté comme vision sans prétendre qu’il est actif, cours, niveaux scolaires, espace parents, enseignants, avantages, tarifs proposés configurables à l’avenir, FAQ, appel à inscription et pied de page), avec navigation et routes publiques utiles; signaler clairement toute fonctionnalité non disponible en Phase 1. **Les blocs tarifs indicatifs et FAQ ont été ajoutés à l’accueil; les prix et services non actifs sont explicitement signalés.**
 - [x] « L'expérience doit être simple, fluide, professionnelle et adaptée à une plateforme éducative internationale. » L’identité ne contient ni drapeau, ni carte nationale, ni nom de pays comme identité de marque.
 
-## Authentification, profil et rôles — code livré; test live en attente de Supabase
+### Authentification, profil et rôles — code livré; test live en attente de Supabase
 
 - [ ] « Implémente l'authentification Supabase : Inscription. Connexion. Déconnexion. Connexion Google si la configuration le permet. Mot de passe oublié et réinitialisation. Vérification de l'adresse email. » Tester les parcours réellement configurables; ne pas afficher Google comme opérationnel sans configuration fournisseur, URL de retour et test. **Le client et les parcours sont écrits; les variables Supabase étant absentes, aucune authentification réelle ni aucun test de bout en bout n’a été exécuté. Google reste masqué par défaut et nécessite configuration/test avant activation.**
 - [ ] « Mets en place les profils utilisateurs et une attribution sécurisée des rôles. Aucun utilisateur ne doit pouvoir devenir administrateur depuis l'inscription publique. » Ne pas permettre l’auto-attribution d’un rôle privilégié; les autorisations sont contrôlées côté serveur/base et dans les policies, pas seulement par l’interface. Éviter toute exposition de secret au frontend. **Le trigger et les grants/RLS sont livrés dans la migration et ont été audités statiquement; le test sur instance Supabase attend l’application de la migration.**
 
-## Onboarding et tableau de bord étudiant — code livré; test live en attente de Supabase
+### Onboarding et tableau de bord étudiant — code livré; test live en attente de Supabase
 
 - [ ] « Développe l'onboarding étudiant avec le niveau, la classe, la série si applicable et les informations nécessaires. » Utiliser une taxonomie configurable; les séries ne s’appliquent qu’aux classes concernées. Ne présenter aucun programme comme officiel sans validation par une source officielle. **Le formulaire et le référentiel sont implémentés; vérification avec un compte étudiant réel bloquée tant que Supabase n’est pas relié.**
 - [ ] « Crée le premier tableau de bord étudiant avec une interface fonctionnelle et des états vides honnêtes. » Les contenus, activités, résultats ou statistiques inexistants restent explicitement vides et ne sont pas simulés. **Le dashboard est implémenté et ses états vides sont visuellement vérifiés; les requêtes réelles et la garde de session nécessitent Supabase.**
 
-## Supabase, migrations et RLS — migration versionnée livrée, non appliquée
+### Supabase, migrations et RLS — migration versionnée livrée, non appliquée
 
 - [ ] « Configure Supabase proprement : migrations versionnées, contraintes, permissions et politiques RLS adaptées. » Activer RLS sur les tables contenant des données privées; permettre à un étudiant l’accès à ses propres données seulement; préparer des rôles parent/enseignant/admin sans leurs fonctionnalités Phase 2; les rôles privilégiés sont attribués par procédure sécurisée. **La migration additive et ses policies sont livrées, puis vérifiées statiquement; aucune base Supabase n’était connectée et la migration n’a pas été exécutée.**
 - [x] Ne supprimer aucune donnée existante; ne jamais désactiver RLS pour contourner une erreur; ne placer aucun secret dans le frontend. Ne pas inscrire de valeur secrète dans le dépôt. **Aucune donnée externe n’a été modifiée; le contrôle des sources n’a trouvé aucune clé service/provider.**
 
-## Préparation de l’architecture pour la suite — livré
+### Préparation de l’architecture pour la suite — livré
 
 - [x] « Prépare l'architecture pour les futurs espaces parent, enseignant et administration sans développer leurs fonctionnalités maintenant. » Prévoir séparation de modules, typage et conventions extensibles. Ne pas passer à la Phase 2.
 - [x] Ne développer que la Phase 1. Ne pas développer les fonctionnalités des phases ultérieures telles que liaison parent-enfant, soumissions enseignant, gestion admin, contenus pédagogiques complets, exercices, examens, assistant IA, abonnements/paiements, notification métier, PWA ou applications natives. **Aucun de ces modules n’est livré comme opérationnel.**
 
-## Qualité et rapport de fin de phase — rapport livré; tests externes bloqués
+### Qualité et rapport Phase 1 — rapport livré; tests externes bloqués
 
 - [ ] « Vérifie le fonctionnement réel des formulaires, boutons, routes et permissions. » « Effectue les tests nécessaires : build, TypeScript, lint, authentification, navigation, responsive et sécurité des permissions. » Rapporter distinctement les tests réussis, échoués, bloqués par une configuration externe et non exécutés; ne pas prétendre à des tests Auth contre Supabase sans service configuré. **Build, TypeScript, lint, tests locaux, routes/manifeste, captures responsives et quelques interactions front sont vérifiés. Auth, RLS et les permissions runtime ne sont pas testables avant configuration Supabase.**
 - [x] « Ne crée pas de fausses fonctionnalités ou de fausses statistiques. » « Ne prétends pas qu'une intégration est opérationnelle si elle n'a pas été testée. »
 - [x] À la fin, fournir un rapport précis indiquant « Ce qui a été développé; Les fichiers créés ou modifiés; Les migrations exécutées; Les tables et politiques RLS; Les fonctionnalités réellement opérationnelles; Les tests réussis et échoués; Les variables d'environnement nécessaires; Les éventuelles configurations que je dois effectuer manuellement sur Supabase ou Vercel. » Distinguer les migrations livrées des migrations réellement appliquées.
-- [x] Préserver le projet et arrêter à la fin de Phase 1 pour attendre la validation de l’utilisateur. Ne pas déployer publiquement sans demande distincte.
+- [x] Préserver le projet et arrêter à la fin de Phase 1 pour attendre la validation de l’utilisateur. Ne pas déployer publiquement sans demande distincte. **Phase 1 a été remise et validée; la validation de Phase 2 ne vaut pas autorisation de Phase 3.**
+
+## Phase 2 — Espaces utilisateurs (code livré; intégration Supabase live en attente)
+
+### Espace parent — demandes complètes à livrer
+
+- [ ] « Créer : Tableau de bord parent. Ajout et association sécurisée d'un ou plusieurs enfants. Demande de liaison avec confirmation. Liste des enfants associés. Consultation de leur progression. Résultats des exercices et examens EduFlow. Chapitres terminés et difficultés. Objectifs d'apprentissage. Notifications et rapports hebdomadaires ou mensuels. » **Avancement :** interfaces parent, demande/code/acceptation/révocation, progression/rapports à la demande, objectifs et notifications sont codés; exécution RPC, RLS et lectures live non testées faute de Supabase configuré.
+- [ ] « Le parent ne doit accéder qu'aux enfants dont le lien a été validé. » L’autorisation doit aussi être contrôlée par la base/RLS. Choix approuvé : code d’invitation à usage unique généré par l’élève, demande déposée par le parent, approbation/refus de l’élève avant activation; le lien ne sera pas présenté comme une vérification juridique de tutelle. Une demande en attente ne dévoile pas les données de l’élève. **Avancement :** séparation participants/liaisons actives est implémentée dans les RPC/RLS et couverte statiquement; l’isolement entre comptes n’a pas été testé en base réelle.
+- [ ] Progrès, résultats, chapitres et difficultés doivent provenir de données réelles. Comme les fonctions pédagogiques concernées ne sont pas encore livrées, afficher des états vides honnêtes; permettre la consultation de rapports semaine/mois à la demande et des notifications in-app, sans prétendre envoyer des rapports planifiés par email/push. **Avancement :** aucun jeu de données simulé; comptes exacts et limite de lignes visible sont en place; génération effective attend les données pédagogiques des phases ultérieures.
+
+### Espace enseignant — dépôts et validation admin
+
+- [ ] « Créer : Profil enseignant. Présentation et matières enseignées. Gestion des cours et ressources. Dépôt de PDF, vidéos et exercices. Liste des contenus soumis. Statut : brouillon, soumis, en examen, approuvé ou refusé. Statistiques de contribution. » Les dépôts PDF/vidéo sont dans un stockage privé, visibles uniquement selon les permissions. **Avancement :** profil, cours proposés, ressources, contributions, uploads privés, états et statistiques réels sont codés; uploads et permissions Storage live non testés.
+- [ ] « Les enseignants contributeurs ne paient pas pour publier leurs contributions. Aucun contenu ne doit être publié comme contenu validé sans approbation administrative. » Seul un administrateur peut approuver; tracer les décisions. Les dépôts d’exercices sont des soumissions éditoriales, pas un moteur d’exercices destiné aux élèves; approbation ne signifie pas que les fonctionnalités pédagogiques Phase 3/4 sont livrées. **Avancement :** aucun parcours de paiement ajouté; seuls les RPC administrateurs autorisent revue/approbation et chaque contribution conserve ses retours; validation live non testée.
+- [ ] Aucun indicateur de contribution ou de publication fictif; les statistiques sont calculées à partir des données réelles de ce compte. **Avancement :** agrégats calculés depuis les soumissions du compte; les compteurs runtime restent à vérifier avec des comptes réels.
+
+### Espace administrateur — contrôle et audit
+
+- [ ] « Créer : Tableau de bord général. Gestion des utilisateurs. Gestion des étudiants, parents et enseignants. Gestion des rôles et permissions. Validation des enseignants et des contributions. Gestion des notifications. Journal des actions administratives. » Les compteurs viennent de la base, sans métriques fictives. **Avancement :** dashboard, listes paginées, rôles, demandes de validation, notifications et audit sont codés avec lectures/écritures RPC; aucune action admin live n’a été testée.
+- [ ] Le tableau admin affiche des routes protégées côté interface et des mutations autorisées uniquement via des politiques RLS/RPC ou fonctions serveur qui vérifient le rôle appelant. Le journal d’actions est append-only et réservé aux personnes autorisées. **Avancement :** guards d’interface et protections RLS/RPC + journal en écriture serveur sont présents; tests d’accès permis/refusés à effectuer après migration.
+- [ ] Le premier compte admin est bootstrapé par le propriétaire depuis un canal Supabase administrateur/SQL de confiance; aucune inscription publique ni aucun enseignant ne peut s’accorder le rôle admin. **Avancement :** aucun bootstrap/droit admin public; l’attribution initiale reste une action propriétaire manuelle Supabase après vérification de l’UUID.
+
+### Sécurité Phase 2
+
+- [ ] « Appliquer les permissions côté serveur. » Les guards frontend ne sont pas une frontière de sécurité; les contrôles sont dans Supabase/PostgreSQL/RLS et les RPC privilégiées. **Avancement :** contrôles RPC/RLS fournis dans la migration; aucune exécution Supabase live.
+- [ ] « Renforcer les politiques RLS. » Activer RLS sur toute nouvelle table privée et sur les objets du bucket de contributions; tester accès légitimes et refusés. **Avancement :** 13 nouvelles tables activent RLS, avec tests statiques; RLS sur la base cible et Storage non éprouvés.
+- [ ] « Protéger les données des mineurs. » Minimiser données exposées, protéger les progressions et résultats, ne pas prétendre que la liaison est une vérification légale de tutelle; aucune messagerie publique ajoutée. **Avancement :** minimisation par liaison active, code à usage unique, affichage parcimonieux et limite de tutelle mentionnée; révision légale séparée requise.
+- [ ] « Empêcher l'accès aux données d'autres utilisateurs. » Un parent ne lit que ses enfants validés; un enseignant ne lit que son profil/contenu; chaque utilisateur ne lit que ses notifications; l’admin agit selon son rôle. **Avancement :** filtres propriétaire, rôle et liaison active codés; test inter-comptes reste bloqué.
+- [ ] « Ne pas permettre à un enseignant de s'attribuer des droits administratifs. » Les rôles parent/enseignant exigent approbation; aucun chemin public d’attribution admin; rôles privilégiés protégés en base. **Avancement :** demandes publiques limitées à parent/enseignant et politiques/grants SQL interdisent l’auto-attribution admin; audit statique réussi, test live en attente.
+- [ ] Ne supprimer aucune donnée Phase 1; migrations additives seulement; ne jamais désactiver RLS pour contourner un problème; aucune clé `service_role` ni autre secret côté frontend ou dans le dépôt. **Avancement :** nouvelle migration uniquement additive, aucune base modifiée, aucune RLS désactivée ni secret ajouté.
+
+### Limite de périmètre et livraison
+
+- [x] « Ne crée pas encore les fonctionnalités pédagogiques complètes de la phase 3. » Ne pas construire maintenant les cours/chapitres/leçons élèves, le lecteur, les exercices/examens actifs, corrections, EduAI, paiements, abonnements ou contenus pédagogiques complets. Les composants Phase 2 ne simulent pas ces fonctions. **Résultat :** aucune route, table, donnée ou moteur élève de Phase 3 n’a été ajouté.
+- [ ] « Tester chaque espace avec les rôles concernés, les permissions, les accès interdits, les migrations et le responsive. » Rapporter ce qui est réellement testé; marquer les tests Auth/RLS/intégration comme bloqués si les paramètres Supabase, les migrations ou les comptes de rôle manquent. Ne jamais exécuter une migration contre une cible inconnue. **Avancement :** 12 tests locaux passent; TypeScript/lint/build/parse SQL/manifeste passent. Les tests Auth/RLS/Storage/accès interdits et affichage protégé responsive sont bloqués par l’absence de Supabase et comptes de test.
+- [x] « À la fin, fournis un rapport détaillé et attends ma validation avant la phase 3. » Le rapport doit préciser les fichiers, migrations livrées/appliquées, tables/policies, comportements opérationnels, résultats de tests, limites et configurations Supabase/Vercel manuelles. Arrêter après Phase 2 et ne pas commencer Phase 3 sans validation. **Avancement :** rapport créé dans `PHASE2_REPORT.md`; il distingue migrations livrées/non exécutées, fonctionnalités codées et contrôles bloqués. Phase 3 non commencée; attente de validation.
