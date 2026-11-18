@@ -1,4 +1,4 @@
-# EduFlow — Rapport Phase 3 : Système pédagogique
+# eduschole — Rapport Phase 3 : Système pédagogique
 
 **État :** implémentation du code Phase 3 terminée et contrôles locaux réussis. La validation de l’intégration Supabase en conditions réelles reste bloquée jusqu’à la configuration du projet et l’application manuelle des migrations. Le périmètre s’arrête strictement avant la Phase 4 (examens complets et EduAI).
 
@@ -27,7 +27,7 @@ Les nouvelles fonctions sont raccordées au routeur existant, aux layouts par r�
 
 - Ressources PDF, documents, images, illustrations, fiches et fichiers audio pris en charge, avec métadonnées PostgreSQL et chemin Storage. Téléchargement par URL signée temporaire uniquement lorsque la ressource est publiée, accessible au parcours et téléchargeable.
 - Les vidéos sont des URL HTTPS YouTube/Vimeo, avec fournisseur, miniature, durée, rattachement scolaire, lecteur externe et suivi de progression permis par le lecteur.
-- EduFlow n’héberge ni ne téléverse de vidéos; les liens et limites du fournisseur demeurent applicables.
+- eduschole n’héberge ni ne téléverse de vidéos; les liens et limites du fournisseur demeurent applicables.
 
 ### Administration et contributions enseignantes
 
@@ -120,7 +120,7 @@ Le scan de secrets a seulement relevé les valeurs de remplacement descriptives 
 ### Supabase
 
 1. Dans les paramètres d’environnement WebDev et Vercel, renseigner seulement `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` (ou clé anon publique). Ne pas utiliser la clé `service_role`.
-2. Confirmer que le projet Supabase sélectionné est bien la cible EduFlow et vérifier son schéma/migrations avant toute exécution. Appliquer dans l’ordre les migrations Phase 1, Phase 2, Phase 3 indiquées ci-dessus; ne pas utiliser `db reset`, ne pas supprimer de données et ne pas désactiver RLS.
+2. Confirmer que le projet Supabase sélectionné est bien la cible eduschole et vérifier son schéma/migrations avant toute exécution. Appliquer dans l’ordre les migrations Phase 1, Phase 2, Phase 3 indiquées ci-dessus; ne pas utiliser `db reset`, ne pas supprimer de données et ne pas désactiver RLS.
 3. Vérifier les buckets privés et leurs limites/politiques dans Storage après application; la migration ne rend pas les fichiers publics.
 4. Autoriser dans Auth les origines Preview/production et les chemins `/auth/callback` et `/reset-password`. Garder Google OAuth désactivé tant que le fournisseur, les callback URLs et le test réel ne sont pas effectués. Le drapeau facultatif `VITE_SUPABASE_GOOGLE_OAUTH_ENABLED` reste `false` par défaut.
 5. Créer le premier rôle administrateur par la procédure sécurisée Supabase déjà documentée dans `README.md`, après vérification de l’UUID du propriétaire; aucun parcours public ne permet de devenir admin.
@@ -131,6 +131,6 @@ Utiliser `pnpm install --frozen-lockfile`, `pnpm build`, le répertoire de sorti
 
 ## 7. Éléments hors périmètre et décision attendue
 
-Aucun examen complet, moteur de correction, score d’évaluation, EduAI ni paiement/abonnement n’a été ajouté. Les exercices éventuellement enregistrés dans une leçon sont du texte éditorial uniquement. EduFlow n’héberge pas de vidéo.
+Aucun examen complet, moteur de correction, score d’évaluation, EduAI ni paiement/abonnement n’a été ajouté. Les exercices éventuellement enregistrés dans une leçon sont du texte éditorial uniquement. eduschole n’héberge pas de vidéo.
 
 **La Phase 3 est livrée au niveau du code et des tests locaux, mais la validation opérationnelle complète attend Supabase.** Le dépôt peut être livré en checkpoint sans déployer le site. Merci de valider le rapport et, après configuration Supabase, de demander la reprise pour exécuter les vérifications live manquantes. Je m’arrête ici sans commencer la Phase 4.

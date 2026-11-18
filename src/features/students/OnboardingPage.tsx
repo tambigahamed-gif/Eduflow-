@@ -33,7 +33,7 @@ export function OnboardingPage() {
         .order('name');
       if (!active) return;
       if (error) {
-        setErrorMessage('Le référentiel scolaire n’est pas prêt. Vérifie que la migration EduFlow a été appliquée dans Supabase.');
+        setErrorMessage('Le référentiel scolaire n’est pas prêt. Vérifie que la migration eduschole a été appliquée dans Supabase.');
       } else {
         const rows = data ?? [];
         setSystems(rows);

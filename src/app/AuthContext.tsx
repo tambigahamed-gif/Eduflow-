@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profile: profileResult.data,
         roles: (roleResult.data ?? []).map((row) => row.role),
         studentProfile: studentResult.data,
-        error: hasError ? 'Le profil EduFlow n’est pas encore disponible. Vérifie que les migrations nécessaires sont appliquées dans Supabase.' : null,
+        error: hasError ? 'Le profil eduschole n’est pas encore disponible. Vérifie que les migrations nécessaires sont appliquées dans Supabase.' : null,
       });
     } catch {
       setAccountSnapshot({
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profile: null,
         roles: [],
         studentProfile: null,
-        error: 'Le profil EduFlow ne peut pas être chargé pour le moment. Vérifie la connexion et réessaie.',
+        error: 'Le profil eduschole ne peut pas être chargé pour le moment. Vérifie la connexion et réessaie.',
       });
     }
   }, []);

@@ -1,5 +1,6 @@
 import { ArrowRight, BookOpenCheck, Check, ChevronRight, GraduationCap, Lightbulb, ShieldCheck, Sparkles, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { EDUSCHOLE_LOGO_SRC } from '../../components/Brand';
 
 const foundations = [
   { icon: BookOpenCheck, title: 'Des cours qui prennent sens', text: 'Des leçons structurées pour comprendre les notions, pas seulement parcourir des documents.', state: 'En préparation' },
@@ -14,7 +15,7 @@ const schoolStages = [
 ];
 
 const homeFaq = [
-  { question: 'EduFlow est-il déjà ouvert aux élèves ?', answer: 'Les fondations du site sont en cours. L’inscription dépend encore de la configuration Supabase; les cours et activités pédagogiques ne sont pas disponibles dans cette Phase 1.' },
+  { question: 'eduschole est-il déjà ouvert aux élèves ?', answer: 'Les fondations du site sont en cours. L’inscription dépend encore de la configuration Supabase; les cours et activités pédagogiques ne sont pas disponibles dans cette Phase 1.' },
   { question: 'EduAI et les cours sont-ils déjà actifs ?', answer: 'Non. Les cours vérifiés et EduAI appartiennent à la vision du produit, mais ne sont pas encore proposés par cette version.' },
   { question: 'Les parents et les enseignants ont-ils leur espace ?', answer: 'Ces espaces sont prévus après les fondations. Aucun suivi familial ni outil enseignant n’est actif aujourd’hui.' },
   { question: 'Les tarifs Premium correspondent-ils à une offre en vente ?', answer: 'Non. Les montants affichés sont des propositions indicatives du cahier des charges. Aucun abonnement ni paiement n’est activé.' },
@@ -30,10 +31,10 @@ export function HomePage() {
           <div className="hero-copy">
             <span className="eyebrow hero-eyebrow"><span className="eyebrow-dot" /> L’apprentissage, avec plus de clarté</span>
             <h1>Comprendre aujourd’hui.<br /><span>Réussir demain.</span></h1>
-            <p className="hero-lead">EduFlow réunit dans un même espace ce qu’il faut pour apprendre avec méthode, reprendre confiance et avancer à son rythme.</p>
+            <p className="hero-lead">eduschole réunit dans un même espace ce qu’il faut pour apprendre avec méthode, reprendre confiance et avancer à son rythme.</p>
             <div className="hero-actions">
               <Link className="button button-primary button-large" to="/register">Créer mon espace <ArrowRight size={17} /></Link>
-              <Link className="text-link" to="/features">Découvrir EduFlow <ChevronRight size={17} /></Link>
+              <Link className="text-link" to="/features">Découvrir eduschole <ChevronRight size={17} /></Link>
             </div>
             <div className="hero-assurance"><ShieldCheck size={17} /><span>Une plateforme conçue avec attention pour les élèves et leurs familles.</span></div>
           </div>
@@ -41,21 +42,21 @@ export function HomePage() {
             <div className="hero-visual-glow" aria-hidden="true" />
             <div className="hero-logo-card">
               <div className="hero-logo-topline"><span className="live-indicator" /> Une nouvelle façon d’apprendre</div>
-              <img src="/manus-storage/1000028021_f3245f84.png" alt="Logo EduFlow — Apprendre. Comprendre. Réussir." />
-              <div className="hero-card-foot"><span className="hero-foot-icon"><GraduationCap size={19} /></span><span><strong>Chaque élève a son rythme.</strong><small>EduFlow grandit étape par étape.</small></span><Sparkles size={19} className="hero-foot-spark" /></div>
+              <img src={EDUSCHOLE_LOGO_SRC} alt="Logo eduschole — Apprendre • Progresser • Réussir" />
+              <div className="hero-card-foot"><span className="hero-foot-icon"><GraduationCap size={19} /></span><span><strong>Chaque élève a son rythme.</strong><small>eduschole grandit étape par étape.</small></span><Sparkles size={19} className="hero-foot-spark" /></div>
             </div>
             <div className="float-note float-note-top"><span className="float-note-icon note-blue"><BookOpenCheck size={17} /></span><span><strong>Apprendre</strong><small>avec intention</small></span></div>
             <div className="float-note float-note-bottom"><span className="float-note-icon note-yellow"><Lightbulb size={17} /></span><span><strong>Comprendre</strong><small>à son rythme</small></span></div>
             <div className="visual-dot visual-dot-one" aria-hidden="true" /><div className="visual-dot visual-dot-two" aria-hidden="true" />
           </div>
         </div>
-        <div className="hero-bottom-line page-wrap"><span>Un espace pour apprendre avec confiance</span><span>EduFlow · Apprendre. Comprendre. Réussir.</span></div>
+        <div className="hero-bottom-line page-wrap"><span>Un espace pour apprendre avec confiance</span><span>eduschole · Apprendre • Progresser • Réussir</span></div>
       </section>
 
       <section className="intro-section page-wrap section-pad">
         <div className="section-heading-row">
-          <div><span className="eyebrow">LA VISION EDUFLOW</span><h2>Tout commence par<br /><span>une notion comprise.</span></h2></div>
-          <p>Apprendre ne devrait pas se résumer à accumuler des pages. EduFlow est pensé comme un environnement d’apprentissage vivant : des ressources claires, de la pratique et un accompagnement qui s’adapte à l’élève.</p>
+          <div><span className="eyebrow">LA VISION EDUSCHOLE</span><h2>Tout commence par<br /><span>une notion comprise.</span></h2></div>
+          <p>Apprendre ne devrait pas se résumer à accumuler des pages. eduschole est pensé comme un environnement d’apprentissage vivant : des ressources claires, de la pratique et un accompagnement qui s’adapte à l’élève.</p>
         </div>
         <div className="foundation-cards">
           {foundations.map(({ icon: Icon, title, text, state }, index) => (
@@ -93,9 +94,9 @@ export function HomePage() {
           <div className="family-art-ring ring-one" /><div className="family-art-ring ring-two" />
           <div className="family-note family-note-one"><span><Users size={18} /></span><strong>Élèves</strong><small>Au cœur de l’expérience</small></div>
           <div className="family-note family-note-two"><span><ShieldCheck size={18} /></span><strong>Familles</strong><small>À leurs côtés, bientôt</small></div>
-          <div className="family-center"><BookOpenCheck size={42} /><span>EduFlow</span></div>
+          <div className="family-center"><BookOpenCheck size={42} /><span>eduschole</span></div>
         </div>
-        <div className="family-copy"><span className="eyebrow">UN ENVIRONNEMENT, PLUSIEURS REGARDS</span><h2>L’élève avance.<br /><span>Son entourage l’accompagne.</span></h2><p>EduFlow prévoit une place pour les parents et les enseignants, tout en gardant le parcours de l’élève au centre. Ces espaces seront déployés après les fondations de la plateforme.</p><Link className="text-link" to="/about">Lire notre vision <ChevronRight size={17} /></Link></div>
+        <div className="family-copy"><span className="eyebrow">UN ENVIRONNEMENT, PLUSIEURS REGARDS</span><h2>L’élève avance.<br /><span>Son entourage l’accompagne.</span></h2><p>eduschole prévoit une place pour les parents et les enseignants, tout en gardant le parcours de l’élève au centre. Ces espaces seront déployés après les fondations de la plateforme.</p><Link className="text-link" to="/about">Lire notre vision <ChevronRight size={17} /></Link></div>
       </section>
 
       <section className="home-pricing page-wrap section-pad">
@@ -114,7 +115,7 @@ export function HomePage() {
       <section className="home-faq page-wrap section-pad">
         <div className="section-heading-row">
           <div><span className="eyebrow">QUESTIONS FRÉQUENTES</span><h2>Des réponses<br /><span>sans détour.</span></h2></div>
-          <p>EduFlow se construit par étapes. Nous distinguons clairement ce qui existe aujourd’hui de ce qui reste à développer.</p>
+          <p>eduschole se construit par étapes. Nous distinguons clairement ce qui existe aujourd’hui de ce qui reste à développer.</p>
         </div>
         <div className="faq-list">
           {homeFaq.map((item) => <details key={item.question} className="faq-item"><summary>{item.question}<ChevronRight size={18} /></summary><p>{item.answer}</p></details>)}
@@ -126,7 +127,7 @@ export function HomePage() {
           <span className="final-cta-spark"><Sparkles size={22} /></span>
           <span className="eyebrow eyebrow-light">LE PREMIER PAS COMMENCE ICI</span>
           <h2>Prêt à faire de la place<br />à la compréhension ?</h2>
-          <p>Crée ton compte étudiant pour préparer ton espace EduFlow.</p>
+          <p>Crée ton compte étudiant pour préparer ton espace eduschole.</p>
           <Link className="button button-yellow button-large" to="/register">Commencer mon inscription <ArrowRight size={17} /></Link>
           <div className="final-cta-checks"><span><Check size={15} /> Inscription gratuite</span><span><Check size={15} /> Compte étudiant privé</span></div>
         </div>

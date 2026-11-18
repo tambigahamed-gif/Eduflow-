@@ -1,8 +1,8 @@
-# EduFlow — Plan projet (Phases 1–2 préservées; Phase 3 proposée)
+# eduschole — Plan projet (Phases 1–2 préservées; Phase 3 proposée)
 
 ## Contexte et état vérifié
 
-EduFlow est le projet React 19, TypeScript, Vite, Tailwind, React Router et Supabase JS situé dans `/home/ubuntu/eduflow`. Le dépôt local est propre sur `main`; l’application répond sur le port Preview 3000 et les diagnostics TypeScript gérés sont enregistrés. La configuration WebDev indique que `server`/`database` Manus sont désactivés, que le dépôt canonique WebDev reste géré par Manus et qu’aucune publication automatique n’est activée.
+eduschole est le projet React 19, TypeScript, Vite, Tailwind, React Router et Supabase JS situé dans `/home/ubuntu/eduflow`. Le dépôt local est propre sur `main`; l’application répond sur le port Preview 3000 et les diagnostics TypeScript gérés sont enregistrés. La configuration WebDev indique que `server`/`database` Manus sont désactivés, que le dépôt canonique WebDev reste géré par Manus et qu’aucune publication automatique n’est activée.
 
 La Phase 1 fournit le site public, l’authentification et l’espace étudiant, la taxonomie scolaire initiale et sa migration. La Phase 2 ajoute les espaces parent, enseignant et administration, les soumissions, les liens parent-enfant et leurs politiques. Ces capacités et leurs routes doivent rester intactes. Le README du dépôt précise que les migrations Phase 1 et Phase 2 sont livrées mais qu’aucune n’a été appliquée sur une base réelle. Au contrôle du 16 novembre 2026, `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` sont absentes; aucune base ni Storage cible ne peut donc être testée ou modifiée dans le cadre de la proposition.
 
@@ -22,7 +22,7 @@ Référentiel configurable à ajouter :
 - Matières par système éducatif et association matière-classe, sans liste de matières codée en dur.
 - Chapitres par matière et classe, avec ordre, nom et état actif.
 
-Modèle pédagogique prévu : cours organisés par matière-classe, leçons rattachées à un cours et à un chapitre, ressources documentaires et vidéos rattachées à une leçon ou au référentiel concerné. Les leçons stockeront les champs structurés demandés : titre, description, objectifs, introduction, explications, définitions, exemples, formules, illustrations, exercices proposés sous forme éditoriale sans tentative ni correction automatisée, résumé et points importants; elles garderont auteur, statut, décideur et dates de validation. Les ressources auront des métadonnées PostgreSQL typées (catégorie, MIME, taille, nom, chemin, droits de téléchargement et rattachement). Les vidéos stockeront titre, description, URL externe, fournisseur, miniature, durée, classe, matière, chapitre et statut; aucune vidéo ne sera hébergée par EduFlow dans cette phase.
+Modèle pédagogique prévu : cours organisés par matière-classe, leçons rattachées à un cours et à un chapitre, ressources documentaires et vidéos rattachées à une leçon ou au référentiel concerné. Les leçons stockeront les champs structurés demandés : titre, description, objectifs, introduction, explications, définitions, exemples, formules, illustrations, exercices proposés sous forme éditoriale sans tentative ni correction automatisée, résumé et points importants; elles garderont auteur, statut, décideur et dates de validation. Les ressources auront des métadonnées PostgreSQL typées (catégorie, MIME, taille, nom, chemin, droits de téléchargement et rattachement). Les vidéos stockeront titre, description, URL externe, fournisseur, miniature, durée, classe, matière, chapitre et statut; aucune vidéo ne sera hébergée par eduschole dans cette phase.
 
 Les choix de statut seront explicites : brouillon, soumis, en examen, approuvé/publié, refusé ou archivé selon le type d’enregistrement. Des tables distinctes stockeront les favoris et la progression/reprise (position/section pour les leçons, position et état de visionnage pour les vidéos); la page de lecture sauvegardera puis restaurera la section réellement consultée. Les événements de leçon réellement terminée pourront alimenter la progression parentale Phase 2 via une opération sécurisée; ils ne créeront jamais de résultat d’exercice ou d’examen.
 
@@ -73,18 +73,22 @@ Les dépendances existantes suffisent en principe (React, TypeScript, Supabase J
 
 ## Direction visuelle conservée et appliquée
 
-- **Mouvement :** EdTech éditoriale contemporaine, claire et rassurante, issue du logo EduFlow.
+- **Mouvement :** EdTech éditoriale contemporaine, claire et rassurante, issue du nouveau logo eduschole fourni.
 - **Principes :** lisibilité d’abord, mobile prioritaire, contenu hiérarchisé, états honnêtes et confiance dans les accès.
-- **Couleurs :** bleu nuit `#172554` pour la structure, bleu `#2563EB` pour l’action et la navigation, jaune `#FBBF24` comme accent mémorable, vert `#16A34A` pour les validations; blanc et gris clair pour une lecture calme.
+- **Couleurs :** bleu nuit `#172554` pour la structure, bleu `#2563EB` pour l’action et la navigation, orange `#F97316` pour la chaleur et les accents de marque, jaune `#FBBF24` pour les repères lumineux; vert sémantique conservé pour les validations. Blanc et gris clair préservent une lecture calme.
 - **Disposition :** parcours vertical lisible sur smartphone, navigation latérale repliable sur grand écran, filtres accessibles et contenu principal dégagé; éviter les tableaux denses sur mobile.
 - **Éléments signatures :** ruban de progression, accents courbes inspirés du livre du logo, petits repères de couleur par état/statut.
 - **Interactions/animation :** retours d’état immédiats et explicites, lecture sauvegardable, contrôles accessibles; transitions courtes et discrètes respectant `prefers-reduced-motion`.
 - **Typographie :** Inter ou police système équivalente pour l’interface; titres sobres en échelle régulière, textes de leçon généreusement espacés et largeur de lecture maîtrisée.
 - **Essence de marque :** « La plateforme qui relie programmes structurés, leçons accessibles et ressources vérifiées pour les élèves et leurs accompagnants. » Personnalité : claire, encourageante, fiable.
 - **Voix :** directe, bienveillante, non infantilisante. Exemples : « Reprends là où tu t’étais arrêté. » « Cette leçon n’est pas encore publiée. »
-- **Logo :** réutiliser le logo fourni et ses motifs de livre ouvert/cap; ne pas le remplacer par un pictogramme générique.
-- **Couleur signature :** bleu EduFlow `#2563EB`, accompagné du jaune du logo.
+- **Logo :** réutiliser le nouveau logo eduschole fourni et ses motifs de livre ouvert/cap; décliner le symbole en favicon sans le remplacer par un pictogramme générique.
+- **Couleur signature :** bleu eduschole `#2563EB`, accompagné du bleu nuit, de l’orange et du jaune du logo.
+
+## Renommage et identité eduschole
+
+Mettre à jour le nom produit et son slogan dans l’interface, les espaces par rôle, les pages publiques, les descriptions accessibles, le manifeste de routes et les métadonnées. Intégrer le logo utilisateur et une icône favicon issue du même symbole. Conserver tout le code métier, les comptes, les identifiants Storage/Supabase et les données; aucune migration, suppression ou reconstruction de projet n’est autorisée. Valider les vues responsive sur mobile et ordinateur ainsi que lint, types, tests et build.
 
 ## Préconditions et limites d’intégration
 
-Au dernier contrôle, les deux paramètres Supabase sont absents, le dépôt indique que les migrations précédentes ne sont pas appliquées et il n’existe pas de base/Storage de test confirmé. La phase peut être codée et contrôlée localement sans cela, mais inscription/connexion, politiques RLS, Storage, cours avec données réelles et tests d’accès par rôles resteront non vérifiés en live jusqu’à configuration de Supabase et application ordonnée des migrations 1, 2 puis 3 sur l’instance EduFlow vérifiée. Aucun déploiement Vercel ou publication publique n’est inclus dans cette phase.
+Au dernier contrôle, les deux paramètres Supabase sont absents, le dépôt indique que les migrations précédentes ne sont pas appliquées et il n’existe pas de base/Storage de test confirmé. La phase peut être codée et contrôlée localement sans cela, mais inscription/connexion, politiques RLS, Storage, cours avec données réelles et tests d’accès par rôles resteront non vérifiés en live jusqu’à configuration de Supabase et application ordonnée des migrations 1, 2 puis 3 sur l’instance eduschole vérifiée. Aucun déploiement Vercel ou publication publique n’est inclus dans cette phase.

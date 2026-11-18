@@ -29,7 +29,7 @@ export function StudentLayout() {
     <div className="student-app-shell">
       <aside className={`student-sidebar${menuOpen ? ' sidebar-open' : ''}`}>
         <div className="sidebar-brand-row">
-          <Brand compact />
+          <Brand compact to="/dashboard" ariaLabel="eduschole — tableau de bord étudiant" />
           <button className="sidebar-close" type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer la navigation"><X size={20} /></button>
         </div>
         <div className="sidebar-context"><span className="sidebar-context-icon"><GraduationCap size={17} /></span><span>Mon espace étudiant</span></div>
@@ -67,9 +67,9 @@ export function StudentLayout() {
       <div className="student-main-column">
         <header className="student-topbar">
           <button className="student-menu-toggle" type="button" onClick={() => setMenuOpen(true)} aria-label="Ouvrir la navigation"><Menu size={21} /></button>
-          <Link className="student-mobile-brand" to="/dashboard"><Brand compact /></Link>
+          <Brand compact className="student-mobile-brand" to="/dashboard" ariaLabel="eduschole — tableau de bord étudiant" />
           <span className="topbar-context">Mon espace d’apprentissage</span>
-          {roles.length > 1 && <label className="student-role-switch"><span className="sr-only">Changer d’espace EduFlow</span><select aria-label="Changer d’espace EduFlow" value="student" onChange={(event) => navigate(roleHome[event.target.value as AppRole])}>{(['student', 'parent', 'teacher', 'admin'] as AppRole[]).filter((role) => roles.includes(role)).map((role) => <option key={role} value={role}>{roleLabel[role]}</option>)}</select></label>}
+          {roles.length > 1 && <label className="student-role-switch"><span className="sr-only">Changer d’espace eduschole</span><select aria-label="Changer d’espace eduschole" value="student" onChange={(event) => navigate(roleHome[event.target.value as AppRole])}>{(['student', 'parent', 'teacher', 'admin'] as AppRole[]).filter((role) => roles.includes(role)).map((role) => <option key={role} value={role}>{roleLabel[role]}</option>)}</select></label>}
           <Link className="topbar-avatar" to="/dashboard" aria-label={`Compte de ${profile?.first_name || 'l’élève'}`}>
             {(profile?.first_name?.[0] ?? 'E').toUpperCase()}
           </Link>

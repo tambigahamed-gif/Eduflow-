@@ -59,7 +59,7 @@ export function PublicLayout() {
             <Link to="/faq">Questions fréquentes</Link>
           </div>
           <div className="footer-column">
-            <strong>EduFlow</strong>
+            <strong>eduschole</strong>
             <Link to="/about">Notre vision</Link>
             <Link to="/contact">Contact</Link>
             <Link to="/login">Mon espace</Link>
@@ -71,8 +71,8 @@ export function PublicLayout() {
           </div>
         </div>
         <div className="footer-bottom page-wrap">
-          <span>© {new Date().getFullYear()} EduFlow</span>
-          <span>Apprendre. Comprendre. Réussir.</span>
+          <span>© {new Date().getFullYear()} eduschole</span>
+          <span>Apprendre • Progresser • Réussir</span>
         </div>
       </footer>
     </>

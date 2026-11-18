@@ -6,7 +6,7 @@ import './styles.css';
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
-  throw new Error('Élément racine EduFlow introuvable.');
+  throw new Error('Élément racine eduschole introuvable.');
 }
 
 createRoot(rootElement).render(

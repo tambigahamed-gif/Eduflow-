@@ -1,11 +1,11 @@
-# EduFlow — Rapport de livraison Phase 1
+# eduschole — Rapport de livraison Phase 1
 
 **État :** fondations livrées dans le projet WebDev; aucune Phase 2 commencée. Le projet demeure en pré-lancement. L’authentification et les données ne sont pas opérationnelles contre un Supabase réel, car aucun projet Supabase n’était relié pendant cette livraison.
 
 ## 1. Ce qui a été développé
 
 - Projet React, TypeScript, Vite et Tailwind structuré en modules, avec routes publiques et privées, layouts séparés et types extensibles pour `student`, `parent`, `teacher` et `admin`.
-- Identité EduFlow reprenant le logo fourni et la palette du cahier; interface adaptative et prioritaire smartphone. L’accueil comprend désormais la promesse, les fonctionnalités et leur état réel, les niveaux, l’accompagnement des familles et enseignants, les tarifs proposés, une FAQ, le CTA et le pied de page. Les montants Premium sont explicitement indicatifs et non activés.
+- Identité eduschole reprenant le logo fourni et la palette du cahier; interface adaptative et prioritaire smartphone. L’accueil comprend désormais la promesse, les fonctionnalités et leur état réel, les niveaux, l’accompagnement des familles et enseignants, les tarifs proposés, une FAQ, le CTA et le pied de page. Les montants Premium sont explicitement indicatifs et non activés.
 - Pages publiques de vision, feuille de route, tarifs, FAQ, contact, confidentialité et conditions. Les fonctions à venir, l’absence de paiement et le caractère provisoire des documents juridiques sont signalés; aucun canal de contact ou programme officiel n’est inventé.
 - Parcours d’inscription, connexion, déconnexion, confirmation d’adresse, callback, récupération/réinitialisation du mot de passe et OAuth Google conditionnel intégrés à Supabase Auth. Les formulaires se désactivent honnêtement si Supabase n’est pas relié; le bouton Google reste caché par défaut.
 - Profils, rôles et onboarding étudiant (système éducatif, niveau, classe et série facultative au secondaire), ainsi qu’un premier dashboard élève. Le dashboard n’invente ni cours, ni résultats, ni statistiques.
@@ -24,7 +24,7 @@ Migration livrée : `supabase/migrations/20261113200000_phase1_foundation.sql`.
 
 ## 3. Migrations, tables et permissions
 
-**Migration livrée : une. Migrations exécutées sur une instance Supabase : zéro.** La migration est additive et n’a supprimé aucune donnée. Elle doit être examinée puis appliquée une seule fois sur le projet Supabase EduFlow correct. Aucun accès Supabase n’était disponible pour l’exécuter ou vérifier son résultat.
+**Migration livrée : une. Migrations exécutées sur une instance Supabase : zéro.** La migration est additive et n’a supprimé aucune donnée. Elle doit être examinée puis appliquée une seule fois sur le projet Supabase eduschole correct. Aucun accès Supabase n’était disponible pour l’exécuter ou vérifier son résultat.
 
 La migration crée les types `app_role` (`student`, `parent`, `teacher`, `admin`) et `school_category` (`primary`, `middle`, `secondary`), puis les sept tables suivantes :
 
@@ -89,7 +89,7 @@ Aucune de ces variables n’était présente au dernier contrôle du runtime. Ne
 
 ### Supabase
 
-1. Créer/sélectionner le projet EduFlow et vérifier que la cible est la bonne.
+1. Créer/sélectionner le projet eduschole et vérifier que la cible est la bonne.
 2. Examiner puis appliquer une fois le SQL `supabase/migrations/20261113200000_phase1_foundation.sql`; vérifier dans l’éditeur SQL que tables, trigger et policies ont été créés sans erreur. Ne pas utiliser de commande qui supprime des données ou désactive RLS.
 3. Ajouter `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` dans les paramètres d’environnement WebDev, puis redémarrer le Preview. Utiliser ces mêmes valeurs pour l’environnement Vercel concerné.
 4. Dans Authentication → URL Configuration, configurer les origines exactes Preview/production et autoriser les retours vers `/auth/callback` et `/reset-password`.

@@ -43,7 +43,7 @@ export function RoleLayout({ role, title, links }: { role: AppRole; title: strin
   return <div className="role-app-shell">
     {menuOpen && <button className="role-scrim" type="button" aria-label="Fermer le menu" onClick={() => setMenuOpen(false)} />}
     <aside className={`role-sidebar${menuOpen ? ' is-open' : ''}`}>
-      <div className="role-brand-row"><Link to={roleHome[role]} onClick={() => setMenuOpen(false)} aria-label="EduFlow, accueil de l’espace"><Brand compact /></Link><button className="role-close" type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer la navigation"><X size={20} /></button></div>
+      <div className="role-brand-row"><Brand compact to={roleHome[role]} onClick={() => setMenuOpen(false)} ariaLabel="eduschole — accueil de l’espace" /><button className="role-close" type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer la navigation"><X size={20} /></button></div>
       <div className="role-context"><span><Icon size={17} /></span><div><small>ESPACE</small><strong>{title}</strong></div></div>
       <nav className="role-navigation" aria-label={`Navigation ${roleLabel[role].toLowerCase()}`}>
         {links.map((link) => {
@@ -52,7 +52,7 @@ export function RoleLayout({ role, title, links }: { role: AppRole; title: strin
         })}
       </nav>
       <div className="role-sidebar-bottom">
-        <div className="role-user-row"><span className="role-avatar">{(profile?.first_name?.[0] ?? user?.email?.[0] ?? 'E').toUpperCase()}</span><span className="role-user-text"><strong>{[profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || user?.email || 'Compte EduFlow'}</strong><small>{roleLabel[role]}</small></span></div>
+        <div className="role-user-row"><span className="role-avatar">{(profile?.first_name?.[0] ?? user?.email?.[0] ?? 'E').toUpperCase()}</span><span className="role-user-text"><strong>{[profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || user?.email || 'Compte eduschole'}</strong><small>{roleLabel[role]}</small></span></div>
         {signOutError && <p className="role-error" role="alert">{signOutError}</p>}
         <button className="role-logout" type="button" onClick={() => void signOut()}><LogOut size={16} /> Se déconnecter</button>
       </div>
@@ -60,9 +60,9 @@ export function RoleLayout({ role, title, links }: { role: AppRole; title: strin
     <div className="role-main-column">
       <header className="role-topbar">
         <button className="role-menu-toggle" type="button" aria-label="Ouvrir la navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}><Menu size={21} /></button>
-        <Link to={roleHome[role]} className="role-mobile-brand" aria-label="EduFlow"><Brand compact /></Link>
+        <Brand compact to={roleHome[role]} className="role-mobile-brand" ariaLabel="eduschole — espace utilisateur" />
         <span className="role-topbar-title">{title}</span>
-        {roles.length > 1 ? <label className="role-switch-label"><span>Changer d’espace</span><select aria-label="Changer d’espace EduFlow" value={role} onChange={(event) => navigate(roleHome[event.target.value as AppRole])}>
+        {roles.length > 1 ? <label className="role-switch-label"><span>Changer d’espace</span><select aria-label="Changer d’espace eduschole" value={role} onChange={(event) => navigate(roleHome[event.target.value as AppRole])}>
           {(['student', 'parent', 'teacher', 'admin'] as AppRole[]).filter((candidate) => roles.includes(candidate)).map((candidate) => <option key={candidate} value={candidate}>{roleLabel[candidate]}</option>)}
         </select></label> : <Link className="role-request-link" to="/access-request">Demander un autre espace</Link>}
       </header>
@@ -76,7 +76,7 @@ export function ParentLayout() {
     { to: '/parent/dashboard', label: 'Tableau de bord', icon: GraduationCap },
     { to: '/parent/children', label: 'Enfants et liens', icon: Users },
     { to: '/parent/progress', label: 'Progrès et objectifs', icon: BookOpen },
-    { to: '/parent/results', label: 'Résultats EduFlow', icon: GraduationCap },
+    { to: '/parent/results', label: 'Résultats eduschole', icon: GraduationCap },
     { to: '/parent/notifications', label: 'Notifications', icon: ShieldCheck },
     { to: '/parent/profile', label: 'Mon profil', icon: Users },
   ]} />;

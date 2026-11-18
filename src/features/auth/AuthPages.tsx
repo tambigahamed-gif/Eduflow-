@@ -28,18 +28,18 @@ function AuthFrame({ title, description, children, compact = false }: { title: s
         <div className="auth-aside-orb auth-aside-orb-two" />
         <div className="auth-aside-content">
           <span className="auth-aside-icon"><ShieldCheck size={25} /></span>
-          <span className="eyebrow eyebrow-light">TON ESPACE EDUFLOW</span>
+          <span className="eyebrow eyebrow-light">TON ESPACE EDUSCHOLE</span>
           <h2>Chaque notion comprise t’emmène plus loin.</h2>
           <p>Un espace d’apprentissage pensé pour avancer avec méthode, curiosité et confiance.</p>
           <div className="auth-aside-note"><CheckCircle2 size={17} /><span>Ton compte et ton profil restent privés.</span></div>
         </div>
-        <span className="auth-aside-mark">EduFlow · Apprendre. Comprendre. Réussir.</span>
+        <span className="auth-aside-mark">eduschole · Apprendre • Progresser • Réussir</span>
       </div>
       <div className="auth-panel-wrap">
         <div className="auth-panel">
           <Link to="/" className="auth-back-link"><ArrowLeft size={16} /> Retour à l’accueil</Link>
           <span className="auth-form-icon"><KeyRound size={21} /></span>
-          <span className="eyebrow">BIENVENUE CHEZ EDUFLOW</span>
+          <span className="eyebrow">BIENVENUE CHEZ EDUSCHOLE</span>
           <h1>{title}</h1>
           <p className="auth-description">{description}</p>
           {!hasSupabaseConfig && <ConfigNotice compact />}

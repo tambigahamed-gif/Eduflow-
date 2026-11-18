@@ -170,6 +170,6 @@ export function ExternalVideoPlayer({
       />
     </div>
     {loadFailure?.url === url && <p className="learning-inline-error" role="status"><AlertCircle size={15} /> {loadFailure.message} La progression vidéo peut ne pas être disponible.</p>}
-    <p className="phase2-help">Vidéo fournie par {parsed.provider === 'youtube' ? 'YouTube' : 'Vimeo'}; elle n’est pas hébergée par EduFlow.</p>
+    <p className="phase2-help">Vidéo fournie par {parsed.provider === 'youtube' ? 'YouTube' : 'Vimeo'}; elle n’est pas hébergée par eduschole.</p>
   </div>;
 }

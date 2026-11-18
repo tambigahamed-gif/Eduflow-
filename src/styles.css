@@ -11,6 +11,8 @@
   --navy-deep: #101b3e;
   --blue: #2563eb;
   --blue-dark: #1d4ed8;
+  --orange: #f97316;
+  --orange-soft: #fff7ed;
   --blue-soft: #eff6ff;
   --yellow: #fbbf24;
   --yellow-soft: #fffbeb;
@@ -44,18 +46,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* Brand and public navigation */
 .site-header { position: sticky; z-index: 40; top: 0; border-bottom: 1px solid rgba(229,234,242,.75); background: rgba(255,255,255,.92); backdrop-filter: blur(16px); }
 .header-inner { width: min(1280px, calc(100% - 56px)); height: 82px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; color: var(--navy); }
-.brand-mark { width: 42px; height: 42px; display: grid; place-items: center; color: #fff; border-radius: 13px 13px 13px 5px; background: linear-gradient(145deg, #2563eb, #1748c6); box-shadow: 0 7px 18px rgba(37,99,235,.22); }
-.brand-copy { display: flex; flex-direction: column; gap: 2px; }
-.brand-copy strong { font-size: 22px; line-height: 1; letter-spacing: -.055em; font-weight: 850; }
-.brand-copy strong span { color: var(--blue); }
-.brand-copy small { color: #6a7690; font-size: 9px; line-height: 1.4; font-weight: 650; letter-spacing: .015em; }
+.brand { display: inline-flex; align-items: center; flex: 0 0 auto; color: var(--navy); }
+.brand-logo { display: block; width: 198px; height: 70px; object-fit: contain; }
+.brand-compact .brand-logo { width: 44px; height: 44px; padding: 3px; border-radius: 11px; background: #fff; }
 .brand-light { color: #fff; }
-.brand-light .brand-mark { color: var(--navy); background: var(--yellow); box-shadow: none; }
-.brand-light .brand-copy strong span { color: var(--yellow); }
-.brand-light .brand-copy small { color: #c5d2ed; }
-.brand-compact .brand-mark { width: 38px; height: 38px; }
-.brand-compact .brand-copy strong { font-size: 20px; }
+.brand-light .brand-logo { padding: 4px 7px; border-radius: 10px; background: #fff; }
 .main-navigation { display: flex; align-items: center; justify-content: space-between; flex: 1; gap: 28px; }
 .nav-links, .nav-actions { display: flex; align-items: center; gap: 27px; }
 .nav-link { color: #53617c; font-size: 13px; font-weight: 650; transition: color .16s ease; }
@@ -106,7 +101,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .hero-card-foot span:nth-child(2) { display: flex; flex-direction: column; gap: 3px; }
 .hero-card-foot strong { color: var(--navy); font-size: 11px; }
 .hero-card-foot small { color: #77829a; font-size: 10px; }
-.hero-foot-spark { margin-left: auto; color: #f3b51c; }
+.hero-foot-spark { margin-left: auto; color: var(--orange); }
 .float-note { position: absolute; z-index: 2; display: flex; align-items: center; gap: 9px; padding: 10px 13px; border: 1px solid #edf0f5; border-radius: 14px; background: rgba(255,255,255,.95); box-shadow: 0 10px 28px rgba(23,37,84,.1); }
 .float-note-top { top: 12%; right: -4%; }
 .float-note-bottom { bottom: 13%; left: -6%; }
@@ -173,7 +168,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .family-note-one { top: 49px; right: 3px; }
 .family-note-two { bottom: 47px; left: 3px; }
 .family-note span { grid-row: span 2; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; color: var(--blue); background: #eff6ff; }
-.family-note-two span { color: #9a7100; background: #fff8df; }
+.family-note-two span { color: #c2410c; background: var(--orange-soft); }
 .family-note strong { align-self: end; color: var(--navy); font-size: 10px; }
 .family-note small { align-self: start; color: #78839a; font-size: 9px; }
 .family-copy h2 { margin: 13px 0; color: var(--navy); font-size: clamp(34px,4vw,49px); line-height: 1.12; letter-spacing: -.055em; }
@@ -523,9 +518,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 620px) {
   .page-wrap { width: calc(100% - 36px); }
   .header-inner { width: calc(100% - 32px); height: 68px; }
-  .brand-mark { width: 37px; height: 37px; border-radius: 12px 12px 12px 5px; }
-  .brand-copy strong { font-size: 20px; }
-  .brand-copy small { font-size: 8px; }
+  .brand-logo { width: 160px; height: 58px; }
   .main-navigation { top: 67px; }
   .hero-inner { padding-block: 47px 25px; }
   .hero-eyebrow { font-size: 9px; }
@@ -631,9 +624,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .student-topbar { height: 58px; justify-content: flex-start; padding-inline: 15px; }
   .student-menu-toggle { display: grid; place-items: center; padding: 5px; border: 0; color: var(--navy); background: transparent; }
   .student-mobile-brand { display: inline-flex; }
-  .student-mobile-brand .brand-mark { width: 31px; height: 31px; border-radius: 9px 9px 9px 4px; }
-  .student-mobile-brand .brand-mark svg { width: 19px; }
-  .student-mobile-brand .brand-copy strong { font-size: 17px; }
+  .student-mobile-brand .brand-logo { width: 34px; height: 34px; }
   .topbar-context { display: none; }
   .topbar-avatar { width: 31px; height: 31px; margin-left: auto; }
   .student-content { width: calc(100% - 30px); padding-block: 22px 48px; }
@@ -831,7 +822,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .role-main-column { margin-left: 0; }
   .role-menu-toggle { display: grid; flex: 0 0 auto; place-items: center; width: 37px; height: 37px; border: 1px solid #e7ebf2; border-radius: 10px; color: var(--navy); background: #fff; }
   .role-mobile-brand { display: inline-flex; align-items: center; }
-  .role-mobile-brand .brand-copy small { display: none; }
   .role-topbar { min-height: 61px; gap: 10px; padding: 8px 13px; }
   .role-topbar-title { display: none; }
   .role-switch-label { margin-left: auto; }
@@ -856,8 +846,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 @media (max-width: 430px) {
   .role-topbar { gap: 7px; }
-  .role-mobile-brand .brand-copy strong { font-size: 17px; }
-  .role-mobile-brand .brand-mark { width: 34px; height: 34px; }
+  .role-mobile-brand .brand-logo { width: 32px; height: 32px; }
   .role-switch-label select, .student-role-switch select { min-height: 32px; padding-inline: 7px 20px; font-size: 9px; }
   .phase2-stat-grid { grid-template-columns: 1fr 1fr; }
   .phase2-button { min-height: 36px; padding: 7px 9px; font-size: 9px; }

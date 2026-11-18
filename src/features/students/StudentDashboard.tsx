@@ -68,7 +68,7 @@ export function StudentDashboard() {
         </article>
       </section>
 
-      <section className="dashboard-honesty-note"><span className="honesty-note-icon"><CircleHelp size={18} /></span><div><strong>Rien n’est inventé dans ton espace.</strong><p>Ta progression apparaîtra ici quand tu auras réellement commencé des leçons ou exercices EduFlow.</p></div><Link to="/features" aria-label="Découvrir les prochaines fonctionnalités"><ArrowUpRight size={18} /></Link></section>
+      <section className="dashboard-honesty-note"><span className="honesty-note-icon"><CircleHelp size={18} /></span><div><strong>Rien n’est inventé dans ton espace.</strong><p>Ta progression apparaîtra ici quand tu auras réellement commencé des leçons ou exercices eduschole.</p></div><Link to="/features" aria-label="Découvrir les prochaines fonctionnalités"><ArrowUpRight size={18} /></Link></section>
 
       <section className="dashboard-bottom-note"><span className="bottom-note-icon"><Sparkles size={18} /></span><p><strong>Une étape à la fois.</strong> Les espaces famille, enseignant et les outils pédagogiques seront ajoutés après cette première phase.</p></section>
     </div>

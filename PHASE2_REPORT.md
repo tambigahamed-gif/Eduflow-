@@ -1,11 +1,11 @@
-# EduFlow — Rapport de livraison Phase 2
+# eduschole — Rapport de livraison Phase 2
 
 **Date :** 15 novembre 2026
 **Périmètre :** espaces parent, enseignant et administration uniquement. Les fonctionnalités pédagogiques de Phase 3 n’ont pas été commencées.
 
 ## Résumé exécutif
 
-Le code de Phase 2 est intégré au projet EduFlow en conservant la Phase 1. Les trois espaces, le parcours de liaison, les soumissions et revues, les interfaces admin, une migration additive RLS/Storage et des tests statiques sont présents.
+Le code de Phase 2 est intégré au projet eduschole en conservant la Phase 1. Les trois espaces, le parcours de liaison, les soumissions et revues, les interfaces admin, une migration additive RLS/Storage et des tests statiques sont présents.
 
 **La Phase 2 n’est pas encore validée en bout en bout sur Supabase.** La configuration WebDev ne contient aucun secret et les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` sont absentes. Par prudence, aucune migration n’a été exécutée et aucune base ni donnée utilisateur n’a été modifiée. Les accès Auth, les politiques RLS, le Storage réel et les actions par rôle ne peuvent donc pas être présentés comme opérationnels en environnement live. La configuration Supabase et des comptes de test par rôle sont requis pour terminer cette vérification.
 
@@ -20,7 +20,7 @@ Aucun déploiement public n’a été lancé; `auto_publish` est désactivé. La
 - Pages enfants/liens, progrès et objectifs, résultats, notifications et profil.
 - Les objectifs peuvent être créés pour un enfant lié; les activités viennent exclusivement de `learning_activity`, sans données pédagogiques de démonstration. Les totaux utilisent des comptes exacts Supabase; les vues marquent explicitement la limite de 200 résultats (tous temps) ou 500 activités (rapport hebdomadaire/mensuel) lorsqu’elles n’affichent que les lignes les plus récentes.
 - Rapport hebdomadaire (7 derniers jours) ou mensuel (mois en cours) consultable à la demande. Aucun envoi planifié par email/push n’est configuré.
-- La liaison contrôle les deux comptes EduFlow, pas la qualité juridique de tuteur; cette limite est indiquée dans l’interface et la documentation.
+- La liaison contrôle les deux comptes eduschole, pas la qualité juridique de tuteur; cette limite est indiquée dans l’interface et la documentation.
 
 ### Enseignant
 
@@ -132,7 +132,7 @@ Les insertions ou transitions sensibles (codes de liaison, décisions d’élèv
 
 ### Supabase
 
-1. Vérifier que le projet visé est la bonne instance EduFlow et inspecter l’historique et les données avant d’exécuter quoi que ce soit.
+1. Vérifier que le projet visé est la bonne instance eduschole et inspecter l’historique et les données avant d’exécuter quoi que ce soit.
 2. Examiner/appliquer, une seule fois et dans l’ordre, les deux migrations ci-dessus. Ne pas exécuter `db reset`, ne pas supprimer de données et ne pas désactiver RLS.
 3. Créer/confirmer un premier compte propriétaire, vérifier son UUID puis lui attribuer le rôle `admin` depuis une session Supabase/SQL de confiance; exemples d’instruction dans `README.md`. Ne jamais utiliser le parcours public pour cette opération.
 4. Créer ensuite des comptes de test distincts étudiant, parent, enseignant, administrateur; faire approuver le rôle parent/enseignant; tester acceptation/refus/révocation des liaisons, chaque accès autorisé et refusé, l’upload et les transitions de revue.

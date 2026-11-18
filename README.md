@@ -1,6 +1,6 @@
-# EduFlow — système pédagogique Phase 3
+# eduschole — système pédagogique Phase 3
 
-EduFlow est une application React 19/TypeScript/Vite utilisant un projet **Supabase externe** pour Auth, PostgreSQL/RLS et Storage. Les seules valeurs frontend attendues sont l’URL Supabase et sa clé **publishable/anon** : elles ne donnent aucun privilège à elles seules et ne remplacent pas les politiques RLS. La clé `service_role` ne doit jamais être ajoutée au frontend, à Vercel ou au dépôt.
+eduschole est une application React 19/TypeScript/Vite utilisant un projet **Supabase externe** pour Auth, PostgreSQL/RLS et Storage. Les seules valeurs frontend attendues sont l’URL Supabase et sa clé **publishable/anon** : elles ne donnent aucun privilège à elles seules et ne remplacent pas les politiques RLS. La clé `service_role` ne doit jamais être ajoutée au frontend, à Vercel ou au dépôt.
 
 ## Développement
 
@@ -25,7 +25,7 @@ Sans les deux premières valeurs, les pages publiques sont accessibles, mais l�
 
 ## Mise en place Supabase — manuelle et prudente
 
-La base Supabase n’est pas configurée dans l’environnement de développement au moment du contrôle Phase 3. **Aucune migration Phase 1, Phase 2 ou Phase 3 n’est déclarée comme appliquée, et aucune base externe n’a été modifiée par cette implémentation.** Avant de lancer du SQL, le propriétaire doit vérifier que le projet sélectionné est bien l’instance EduFlow cible, consulter les migrations et confirmer l’état de son schéma.
+La base Supabase n’est pas configurée dans l’environnement de développement au moment du contrôle Phase 3. **Aucune migration Phase 1, Phase 2 ou Phase 3 n’est déclarée comme appliquée, et aucune base externe n’a été modifiée par cette implémentation.** Avant de lancer du SQL, le propriétaire doit vérifier que le projet sélectionné est bien l’instance eduschole cible, consulter les migrations et confirmer l’état de son schéma.
 
 1. Dans le SQL Editor du projet Supabase cible, examiner puis appliquer les migrations versionnées **dans cet ordre**, une seule fois :
    - `supabase/migrations/20261113200000_phase1_foundation.sql`
@@ -50,7 +50,7 @@ on conflict (user_id, role) do nothing;
 
 - Une liaison parent-enfant commence par un code aléatoire à usage unique, stocké seulement sous forme hachée et expirant; l’élève accepte ou refuse la demande. Un parent ne lit que les données d’un enfant disposant d’un lien actif. Cela ne constitue pas une vérification juridique de tutelle.
 - Les enseignants peuvent déposer des propositions gratuites. Les fichiers restent dans un bucket privé; seules les contributions en brouillon/rejetées sont modifiables par leur propriétaire; seule l’administration peut faire passer `submitted → in_review → approved/rejected`. Une approbation de proposition ne publie pas automatiquement un cours aux élèves.
-- Les rapports parentaux affichent seulement les événements EduFlow réellement présents pour les périodes « 7 derniers jours » ou « mois en cours ». Les événements in-app respectent la préférence du compte. Les rapports sont consultés à la demande : aucun email, push ou traitement planifié n’est configuré.
+- Les rapports parentaux affichent seulement les événements eduschole réellement présents pour les périodes « 7 derniers jours » ou « mois en cours ». Les événements in-app respectent la préférence du compte. Les rapports sont consultés à la demande : aucun email, push ou traitement planifié n’est configuré.
 - Le premier rôle admin ne peut pas être demandé publiquement; les demandes parent/enseignant requièrent une approbation. Le client ne peut pas modifier les rôles privilégiés, les décisions de revue ni les journaux admin.
 - Les parcours étudiants existants restent présents; les moteurs complets de cours/chapitres/leçons, exercices/examens élèves, EduAI, paiement et abonnement restent hors de Phase 2.
 
