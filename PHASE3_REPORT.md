@@ -110,6 +110,7 @@ La migration ne change pas la visibilité ni les paramètres d’un bucket prée
 | Auth réelle, RLS et séparation des comptes | Non testées / bloquées | Pas de Supabase configuré, de migration appliquée ni de comptes de test par rôle. Ce n’est pas un résultat de test réussi. |
 | Upload/téléchargement Storage réel | Non testés / bloqués | Bucket et métadonnées livrés en code/migration seulement; aucun service Storage externe relié. |
 | Création, revue et publication contre PostgreSQL réel | Non testées / bloquées | Les formulaires et RPC sont écrits; leur transaction et leurs permissions attendent la base cible. |
+| Git | Poussé | Commit de livraison `5f8a83ca7ebe30f4eb471a9ed739e0799edb4c96` poussé sur `main` du projet et sur `main` du dépôt GitHub `tambigahamed-gif/Eduflow-`; worktree propre après livraison. |
 | Déploiement Vercel | Non effectué | Aucun déploiement public n’a été déclenché. Auto Publish est désactivé. |
 
 Le scan de secrets a seulement relevé les valeurs de remplacement descriptives de `.env.example` (`your-supabase-publishable-key`), pas une clé réelle. Les clés `service_role` ne sont pas requises par le frontend et ne doivent jamais y être ajoutées.
@@ -126,7 +127,7 @@ Le scan de secrets a seulement relevé les valeurs de remplacement descriptives 
 
 ### Vercel
 
-Utiliser `pnpm install --frozen-lockfile`, `pnpm build`, le répertoire de sortie `dist` et la réécriture SPA de `vercel.json`. Le projet requiert Node.js `>=22.12` et pnpm `11.25.0`. Ajouter les variables frontend uniquement aux environnements voulus, redéployer après configuration et tester Auth/RLS/Storage sur l’instance réellement destinée à la production avant ouverture publique.
+Utiliser `pnpm install --frozen-lockfile`, `pnpm build`, le répertoire de sortie `dist` et la réécriture SPA de `vercel.json`. La configuration de build statique WebDev est aussi déclarée (`pnpm install --frozen-lockfile && pnpm build`, sortie `dist`); cela ne publie pas le site. Le projet requiert Node.js `>=22.12` et pnpm `11.25.0`. Ajouter les variables frontend uniquement aux environnements voulus, redéployer après configuration et tester Auth/RLS/Storage sur l’instance réellement destinée à la production avant ouverture publique.
 
 ## 7. Éléments hors périmètre et décision attendue
 
