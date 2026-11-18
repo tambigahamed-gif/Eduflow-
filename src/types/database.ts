@@ -6,9 +6,12 @@ export type ParentLinkRequestStatus = 'pending' | 'accepted' | 'rejected' | 'rev
 export type ParentLinkStatus = 'active' | 'revoked';
 export type LearningGoalStatus = 'active' | 'paused' | 'achieved';
 export type LearningActivityType = 'chapter_completed' | 'exercise_result' | 'exam_result' | 'difficulty';
-export type ContentType = 'course' | 'resource' | 'exercise';
+export type ContentType = 'course' | 'resource' | 'exercise' | 'lesson' | 'video';
 export type ContentStatus = 'draft' | 'submitted' | 'in_review' | 'approved' | 'rejected';
 export type ContentReviewStatus = Extract<ContentStatus, 'in_review' | 'approved' | 'rejected'>;
+export type LearningContentStatus = 'draft' | 'approved' | 'published' | 'archived';
+export type LearningResourceType = 'pdf' | 'document' | 'image' | 'illustration' | 'revision_sheet' | 'audio' | 'other';
+export type VideoProvider = 'youtube' | 'vimeo';
 export type NotificationKind = 'parent_link' | 'role_application' | 'contribution' | 'admin_notice';
 export type ReportFrequency = 'none' | 'weekly' | 'monthly';
 
@@ -264,6 +267,46 @@ export interface Database {
         never,
         never
       >;
+      education_countries: Table<
+        { code: string; name: string; is_active: boolean; created_at: string },
+        { code: string; name: string; is_active?: boolean; created_at?: string }
+      >;
+      school_class_series: Table<{ class_id: string; series_id: string }, { class_id: string; series_id: string }>;
+      school_subjects: Table<
+        { id: string; education_system_id: string; code: string; name: string; description: string; sort_order: number; is_active: boolean },
+        { id?: string; education_system_id: string; code: string; name: string; description?: string; sort_order?: number; is_active?: boolean }
+      >;
+      school_class_subjects: Table<{ class_id: string; subject_id: string }, { class_id: string; subject_id: string }>;
+      school_chapters: Table<
+        { id: string; class_id: string; subject_id: string; title: string; description: string; sort_order: number; is_active: boolean },
+        { id?: string; class_id: string; subject_id: string; title: string; description?: string; sort_order?: number; is_active?: boolean }
+      >;
+      learning_courses: Table<
+        { id: string; education_system_id: string; class_id: string; subject_id: string; series_id: string | null; title: string; description: string; status: LearningContentStatus; author_user_id: string; approved_by: string | null; source_submission_id: string | null; created_at: string; updated_at: string; published_at: string | null; archived_at: string | null },
+        { id?: string; education_system_id: string; class_id: string; subject_id: string; series_id?: string | null; title: string; description?: string; status?: LearningContentStatus; author_user_id: string; approved_by?: string | null; source_submission_id?: string | null; created_at?: string; updated_at?: string; published_at?: string | null; archived_at?: string | null }
+      >;
+      learning_lessons: Table<
+        { id: string; course_id: string; chapter_id: string | null; title: string; description: string; learning_objectives: string[]; introduction: string; explanation: string; definitions: Json; examples: Json; formulas: Json; illustrations: Json; exercises: Json; summary: string; key_points: string[]; author_user_id: string; status: LearningContentStatus; approved_by: string | null; source_submission_id: string | null; created_at: string; updated_at: string; published_at: string | null; archived_at: string | null },
+        { id?: string; course_id: string; chapter_id?: string | null; title: string; description?: string; learning_objectives?: string[]; introduction?: string; explanation?: string; definitions?: Json; examples?: Json; formulas?: Json; illustrations?: Json; exercises?: Json; summary?: string; key_points?: string[]; author_user_id: string; status?: LearningContentStatus; approved_by?: string | null; source_submission_id?: string | null; created_at?: string; updated_at?: string; published_at?: string | null; archived_at?: string | null }
+      >;
+      learning_resources: Table<
+        { id: string; lesson_id: string | null; education_system_id: string; class_id: string; subject_id: string; chapter_id: string | null; series_id: string | null; title: string; description: string; resource_type: LearningResourceType; storage_bucket: string; storage_path: string; mime_type: string; file_size: number; downloadable: boolean; status: LearningContentStatus; author_user_id: string; approved_by: string | null; source_submission_id: string | null; created_at: string; updated_at: string; published_at: string | null; archived_at: string | null },
+        { id?: string; lesson_id?: string | null; education_system_id: string; class_id: string; subject_id: string; chapter_id?: string | null; series_id?: string | null; title: string; description?: string; resource_type: LearningResourceType; storage_bucket?: string; storage_path: string; mime_type: string; file_size: number; downloadable?: boolean; status?: LearningContentStatus; author_user_id: string; approved_by?: string | null; source_submission_id?: string | null; created_at?: string; updated_at?: string; published_at?: string | null; archived_at?: string | null }
+      >;
+      learning_videos: Table<
+        { id: string; lesson_id: string | null; education_system_id: string; class_id: string; subject_id: string; chapter_id: string | null; series_id: string | null; title: string; description: string; provider: VideoProvider; external_url: string; thumbnail_url: string | null; duration_seconds: number | null; status: LearningContentStatus; author_user_id: string; approved_by: string | null; source_submission_id: string | null; created_at: string; updated_at: string; published_at: string | null; archived_at: string | null },
+        { id?: string; lesson_id?: string | null; education_system_id: string; class_id: string; subject_id: string; chapter_id?: string | null; series_id?: string | null; title: string; description?: string; provider: VideoProvider; external_url: string; thumbnail_url?: string | null; duration_seconds?: number | null; status?: LearningContentStatus; author_user_id: string; approved_by?: string | null; source_submission_id?: string | null; created_at?: string; updated_at?: string; published_at?: string | null; archived_at?: string | null }
+      >;
+      student_favorites: Table<
+        { owner_user_id: string; lesson_id: string | null; video_id: string | null; created_at: string },
+        { owner_user_id: string; lesson_id?: string | null; video_id?: string | null; created_at?: string },
+        never
+      >;
+      student_learning_progress: Table<
+        { owner_user_id: string; lesson_id: string | null; video_id: string | null; last_position_seconds: number; last_section: string | null; completed_at: string | null; last_viewed_at: string; updated_at: string },
+        { owner_user_id: string; lesson_id?: string | null; video_id?: string | null; last_position_seconds?: number; last_section?: string | null; completed_at?: string | null; last_viewed_at?: string; updated_at?: string },
+        never
+      >;
     };
     Views: Record<never, never>;
     Functions: {
@@ -302,6 +345,14 @@ export interface Database {
       };
       phase2_admin_send_notification: { Args: { p_user_id: string; p_title: string; p_body: string }; Returns: string };
       phase2_mark_notification_read: { Args: { p_notification_id: string }; Returns: undefined };
+      phase3_user_has_role: { Args: { p_role: AppRole }; Returns: boolean };
+      phase3_student_matches: { Args: { p_system: string; p_class: string; p_series?: string | null }; Returns: boolean };
+      phase3_lesson_readable: { Args: { p_id: string }; Returns: boolean };
+      phase3_video_readable: { Args: { p_id: string }; Returns: boolean };
+      phase3_review_submission: { Args: { p_submission_id: string; p_next_status: ContentReviewStatus; p_note?: string | null }; Returns: string | null };
+      phase3_admin_publish: { Args: { p_kind: 'course' | 'lesson' | 'video' | 'resource'; p_id: string; p_publish: boolean }; Returns: undefined };
+      phase3_toggle_favorite: { Args: { p_lesson_id: string | null; p_video_id: string | null; p_favorite: boolean }; Returns: undefined };
+      phase3_update_progress: { Args: { p_lesson_id: string | null; p_video_id: string | null; p_position_seconds: number; p_last_section: string | null; p_completed: boolean }; Returns: undefined };
     };
     Enums: {
       app_role: AppRole;
@@ -313,6 +364,7 @@ export interface Database {
       learning_activity_type: LearningActivityType;
       content_submission_type: ContentType;
       content_status: ContentStatus;
+      learning_content_status: LearningContentStatus;
       notification_kind: NotificationKind;
       report_frequency: ReportFrequency;
     };

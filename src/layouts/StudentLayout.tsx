@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, ChevronDown, GraduationCap, Link2, LogOut, Menu, X } from 'lucide-react';
+import { BookOpen, Bookmark, ChevronDown, FileText, GraduationCap, History, Link2, LogOut, Menu, PlayCircle, X } from 'lucide-react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Brand } from '../components/Brand';
 import { useAuth } from '../app/AuthContext';
@@ -38,10 +38,11 @@ export function StudentLayout() {
           <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}>
             <BookOpen size={18} /> Mon tableau de bord
           </NavLink>
-          <div className="sidebar-coming" aria-label="Les autres modules seront disponibles ultérieurement">
-            <span className="coming-link"><GraduationCap size={18} /> Cours et matières</span>
-            <span className="coming-pill">À venir</span>
-          </div>
+          <NavLink to="/catalog" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}><GraduationCap size={18} /> Cours et matières</NavLink>
+          <NavLink to="/resources" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}><FileText size={18} /> Bibliothèque</NavLink>
+          <NavLink to="/videos" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}><PlayCircle size={18} /> Vidéos</NavLink>
+          <NavLink to="/favorites" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}><Bookmark size={18} /> Mes favoris</NavLink>
+          <NavLink to="/history" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}><History size={18} /> Historique et reprise</NavLink>
           <span className="sidebar-label">FAMILLE</span>
           <NavLink to="/student/parent-links" className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`} onClick={() => setMenuOpen(false)}>
             <Link2 size={18} /> Liaisons parentales
@@ -51,7 +52,7 @@ export function StudentLayout() {
           <div className="sidebar-support-card">
             <span className="support-spark">✦</span>
             <strong>Chaque progrès compte.</strong>
-            <p>Les nouveaux outils d’apprentissage arriveront étape par étape.</p>
+            <p>Les contenus publiés correspondant à ton parcours s’affichent ici.</p>
           </div>
           <div className="sidebar-user">
             <span className="avatar-initials">{(profile?.first_name?.[0] ?? 'E').toUpperCase()}</span>

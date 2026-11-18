@@ -9,7 +9,7 @@ type Review = Database['public']['Tables']['content_reviews']['Row'];
 type TeacherProfile = { user_id: string; presentation: string; subjects: string[]; levels: string[]; is_active: boolean; verified_by: string | null; verified_at: string | null; created_at: string; updated_at: string };
 type Asset = { path: string; name: string; mime: string; size: number };
 const statusLabels: Record<ContentStatus, string> = { draft: 'Brouillon', submitted: 'Soumis', in_review: 'En examen', approved: 'Approuvé', rejected: 'Refusé' };
-const typeLabels: Record<ContentType, string> = { course: 'Cours (proposition)', resource: 'Ressource', exercise: 'Exercice (proposition éditoriale)' };
+const typeLabels: Record<ContentType, string> = { course: 'Cours (proposition)', resource: 'Ressource', exercise: 'Exercice (proposition éditoriale)', lesson: 'Leçon proposée', video: 'Vidéo externe proposée' };
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 function splitTags(value: string) { return [...new Set(value.split(',').map((part) => part.trim()).filter(Boolean))]; }
@@ -120,7 +120,7 @@ export function TeacherCoursesPage() {
 
 export function TeacherStatisticsPage() {
   const { submissions, loading, error } = useTeacherData(); const counts = useMemo(() => submissions.reduce<Record<ContentStatus, number>>((acc, s) => { acc[s.status] += 1; return acc; }, { draft: 0, submitted: 0, in_review: 0, approved: 0, rejected: 0 }), [submissions]);
-  const kinds = useMemo(() => submissions.reduce<Record<ContentType, number>>((acc, s) => { acc[s.content_type] += 1; return acc; }, { course: 0, resource: 0, exercise: 0 }), [submissions]);
+  const kinds = useMemo(() => submissions.reduce<Record<ContentType, number>>((acc, s) => { acc[s.content_type] += 1; return acc; }, { course: 0, resource: 0, exercise: 0, lesson: 0, video: 0 }), [submissions]);
   return <Page title="Mes statistiques" intro="Indicateurs calculés uniquement à partir de vos propres enregistrements.">{loading ? <Loading /> : error ? <ErrorMessage>{error}</ErrorMessage> : !submissions.length ? <Empty>Aucune statistique disponible avant la création d’une contribution.</Empty> : <><section className="phase2-section"><h2>Par statut</h2><dl className="phase2-stat-grid">{(Object.keys(statusLabels) as ContentStatus[]).map((status) => <div className="phase2-stat" key={status}><dt>{statusLabels[status]}</dt><dd>{counts[status]}</dd></div>)}</dl></section><section className="phase2-section"><h2>Par type</h2><dl className="phase2-stat-grid">{(Object.keys(typeLabels) as ContentType[]).map((type) => <div className="phase2-stat" key={type}><dt>{typeLabels[type]}</dt><dd>{kinds[type]}</dd></div>)}</dl></section></>}</Page>;
 }
 

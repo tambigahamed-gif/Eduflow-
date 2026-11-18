@@ -1,4 +1,4 @@
-# EduFlow — fondations et espaces Phase 2
+# EduFlow — système pédagogique Phase 3
 
 EduFlow est une application React 19/TypeScript/Vite utilisant un projet **Supabase externe** pour Auth, PostgreSQL/RLS et Storage. Les seules valeurs frontend attendues sont l’URL Supabase et sa clé **publishable/anon** : elles ne donnent aucun privilège à elles seules et ne remplacent pas les politiques RLS. La clé `service_role` ne doit jamais être ajoutée au frontend, à Vercel ou au dépôt.
 
@@ -25,12 +25,13 @@ Sans les deux premières valeurs, les pages publiques sont accessibles, mais l�
 
 ## Mise en place Supabase — manuelle et prudente
 
-La base Supabase n’était pas configurée dans l’environnement de développement au moment du dernier contrôle. **Aucune migration Phase 1 ou Phase 2 n’est déclarée comme appliquée, et aucune base externe n’a été modifiée par cette implémentation.** Avant de lancer du SQL, le propriétaire doit vérifier que le projet sélectionné est bien l’instance EduFlow cible, consulter les migrations et confirmer l’état de son schéma.
+La base Supabase n’est pas configurée dans l’environnement de développement au moment du contrôle Phase 3. **Aucune migration Phase 1, Phase 2 ou Phase 3 n’est déclarée comme appliquée, et aucune base externe n’a été modifiée par cette implémentation.** Avant de lancer du SQL, le propriétaire doit vérifier que le projet sélectionné est bien l’instance EduFlow cible, consulter les migrations et confirmer l’état de son schéma.
 
 1. Dans le SQL Editor du projet Supabase cible, examiner puis appliquer les migrations versionnées **dans cet ordre**, une seule fois :
    - `supabase/migrations/20261113200000_phase1_foundation.sql`
    - `supabase/migrations/20261114120000_phase2_user_spaces.sql`
-2. Ne pas exécuter `db reset`, ne pas supprimer de table/donnée et ne pas désactiver RLS. La deuxième migration est additive et exige le schéma/types Phase 1. Elle active RLS sur les nouvelles tables, ajoute les RPC de rôles/liaisons/revue/admin, et configure le bucket privé `eduflow-teacher-contributions` pour PDF, MP4 et WebM, maximum 50 MiB.
+   - `supabase/migrations/20261116060000_phase3_pedagogical_system.sql`
+2. Ne pas exécuter `db reset`, ne pas supprimer de table/donnée et ne pas désactiver RLS. La deuxième migration est additive et exige le schéma/types Phase 1. Elle active RLS sur ses nouvelles tables, ajoute les RPC de rôles/liaisons/revue/admin et configure le bucket privé `eduflow-teacher-contributions`. La migration Phase 3 ajoute les tables pédagogiques protégées et le bucket privé `eduflow-learning-resources`; elle réutilise le bucket des contributions sans rendre les fichiers publics. Vérifier les politiques Storage et les types/limites dans les migrations avant application.
 3. Pour le tout premier administrateur uniquement, identifier manuellement le bon utilisateur depuis l’interface Supabase Auth et ajouter son UUID vérifié par l’éditeur SQL de confiance (jamais depuis une page publique). Exemple à adapter après vérification de l’UUID :
 
 ```sql

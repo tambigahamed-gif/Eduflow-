@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, BriefcaseBusiness, GraduationCap, LogOut, Menu, ShieldCheck, Users, X, type LucideIcon } from 'lucide-react';
+import { BookOpen, BriefcaseBusiness, FileText, GraduationCap, LogOut, Menu, Settings, ShieldCheck, Users, X, type LucideIcon } from 'lucide-react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Brand } from '../components/Brand';
 import { useAuth } from '../app/AuthContext';
@@ -88,6 +88,7 @@ export function TeacherLayout() {
     { to: '/teacher/profile', label: 'Mon profil', icon: Users },
     { to: '/teacher/contributions', label: 'Mes contributions', icon: BookOpen },
     { to: '/teacher/courses', label: 'Mes cours proposés', icon: GraduationCap },
+    { to: '/teacher/learning-contributions', label: 'Leçons, vidéos et ressources', icon: FileText },
     { to: '/teacher/resources', label: 'Mes ressources', icon: BriefcaseBusiness },
     { to: '/teacher/statistics', label: 'Statistiques', icon: ShieldCheck },
   ]} />;
@@ -101,6 +102,8 @@ export function AdminLayout() {
     { to: '/admin/parents', label: 'Parents', icon: Users },
     { to: '/admin/teachers', label: 'Enseignants et demandes', icon: BriefcaseBusiness },
     { to: '/admin/contributions', label: 'Contributions', icon: ShieldCheck },
+    { to: '/admin/programme', label: 'Programme scolaire', icon: Settings },
+    { to: '/admin/learning-content', label: 'Contenus pédagogiques', icon: BookOpen },
     { to: '/admin/notifications', label: 'Notifications', icon: ShieldCheck },
     { to: '/admin/audit', label: 'Journal d’audit', icon: ShieldCheck },
   ]} />;

@@ -113,7 +113,12 @@ export function AdminContributionsPage() {
   async function review(submission: Submission, status: ContentReviewStatus) {
     setBusy(submission.id); setError('');
     try {
-      const { error: result } = await supabase!.rpc('phase2_review_content', { p_submission_id: submission.id, p_next_status: status, p_note: notes[submission.id] || null });
+      const metadata = submission.metadata;
+      const hasPhase3Payload = typeof metadata === 'object' && metadata !== null && !Array.isArray(metadata) && 'phase3' in metadata;
+      const isPhase3 = submission.content_type === 'lesson' || submission.content_type === 'video' || (submission.content_type === 'resource' && hasPhase3Payload);
+      const { error: result } = isPhase3
+        ? await supabase!.rpc('phase3_review_submission', { p_submission_id: submission.id, p_next_status: status, p_note: notes[submission.id] || null })
+        : await supabase!.rpc('phase2_review_content', { p_submission_id: submission.id, p_next_status: status, p_note: notes[submission.id] || null });
       rpcError(result); setSelected(null); await state.reload();
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'La revue a échoué.'); }
     finally { setBusy(''); }

@@ -16,6 +16,9 @@ import { StudentDashboard } from '../features/students/StudentDashboard';
 import { StudentGuardianLinksPage, ParentDashboard, ParentChildrenPage, ParentProgressPage, ParentResultsPage, ParentNotificationsPage, ParentProfilePage } from '../features/parents/ParentPortal';
 import { TeacherDashboard, TeacherProfilePage, TeacherSubmissionsPage, TeacherResourcesPage, TeacherCoursesPage, TeacherStatisticsPage } from '../features/teachers/TeacherPortal';
 import { AdminDashboard, AdminUsersPage, AdminStudentsPage, AdminParentsPage, AdminTeachersPage, AdminContributionsPage, AdminNotificationsPage, AdminAuditPage } from '../features/administration/AdminPortal';
+import { LearningCatalogPage, SubjectLearningPage, CourseLearningPage, ChapterLearningPage, LessonLearningPage, VideoLibraryPage, VideoWatchPage, ResourceLibraryPage, LearningFavoritesPage, LearningHistoryPage } from '../features/learning/StudentLearning';
+import { CurriculumAdminPage, LearningContentAdminPage } from '../features/administration/LearningAdmin';
+import { TeacherLearningSubmissionsPage } from '../features/teachers/TeacherLearningSubmissions';
 import { ConfigNotice } from '../components/ConfigNotice';
 
 function AccountGate({ required, studentFlow = false }: { required?: AppRole; studentFlow?: boolean }) {
@@ -58,9 +61,19 @@ export function App() {
           <Route element={<AccountGate />}><Route path="/access-request" element={<RoleApplicationPage />} /></Route>
           <Route element={<AccountGate required="student" studentFlow />}>
             <Route element={<StudentLayout />}>
-              <Route path="/onboarding" element={<OnboardingPage />} />
-              <Route path="/dashboard" element={<StudentDashboard />} />
-              <Route path="/student/parent-links" element={<StudentGuardianLinksPage />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/dashboard" element={<StudentDashboard />} />
+            <Route path="/student/parent-links" element={<StudentGuardianLinksPage />} />
+            <Route path="/catalog" element={<LearningCatalogPage />} />
+            <Route path="/courses/:courseId" element={<CourseLearningPage />} />
+            <Route path="/subjects/:subjectId" element={<SubjectLearningPage />} />
+            <Route path="/chapters/:chapterId" element={<ChapterLearningPage />} />
+              <Route path="/lessons/:lessonId" element={<LessonLearningPage />} />
+              <Route path="/resources" element={<ResourceLibraryPage />} />
+              <Route path="/videos" element={<VideoLibraryPage />} />
+              <Route path="/videos/:videoId" element={<VideoWatchPage />} />
+              <Route path="/favorites" element={<LearningFavoritesPage />} />
+              <Route path="/history" element={<LearningHistoryPage />} />
             </Route>
           </Route>
           <Route element={<AccountGate required="parent" />}>
@@ -81,6 +94,7 @@ export function App() {
               <Route path="/teacher/resources" element={<TeacherResourcesPage />} />
               <Route path="/teacher/courses" element={<TeacherCoursesPage />} />
               <Route path="/teacher/statistics" element={<TeacherStatisticsPage />} />
+              <Route path="/teacher/learning-contributions" element={<TeacherLearningSubmissionsPage />} />
             </Route>
           </Route>
           <Route element={<AccountGate required="admin" />}>
@@ -93,6 +107,8 @@ export function App() {
               <Route path="/admin/contributions" element={<AdminContributionsPage />} />
               <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
               <Route path="/admin/audit" element={<AdminAuditPage />} />
+              <Route path="/admin/programme" element={<CurriculumAdminPage />} />
+              <Route path="/admin/learning-content" element={<LearningContentAdminPage />} />
             </Route>
           </Route>
           <Route path="/404" element={<NotFound />} />

@@ -1,79 +1,90 @@
-# EduFlow — Plan projet (Phase 1 livrée, Phase 2 implémentée; intégration live en attente)
+# EduFlow — Plan projet (Phases 1–2 préservées; Phase 3 proposée)
 
-## État du projet et objectif
+## Contexte et état vérifié
 
-La Phase 1 demeure la base livrée et doit être préservée : site public, parcours Auth Supabase, onboarding et dashboard étudiant, rôles initiaux et migration `20261113200000_phase1_foundation.sql`. L’implémentation Phase 2 ajoute les espaces parent, enseignant et administration avec contrôle d’accès PostgreSQL/Supabase. La livraison ne passe pas aux fonctions pédagogiques de Phase 3 ni aux exercices/examens élèves de Phase 4.
+EduFlow est le projet React 19, TypeScript, Vite, Tailwind, React Router et Supabase JS situé dans `/home/ubuntu/eduflow`. Le dépôt local est propre sur `main`; l’application répond sur le port Preview 3000 et les diagnostics TypeScript gérés sont enregistrés. La configuration WebDev indique que `server`/`database` Manus sont désactivés, que le dépôt canonique WebDev reste géré par Manus et qu’aucune publication automatique n’est activée.
 
-L’existant est dans `/home/ubuntu/eduflow` (React 19, TypeScript, Vite, Tailwind, React Router, Supabase JS). Le serveur de développement est en service sur le port 3000. `runtime/post-edit` confirme les diagnostics TypeScript gérés. Supabase est un service externe demandé dans le cahier des charges; les capacités Database/Server du projet Manus sont désactivées et ne doivent pas être activées en doublon.
+La Phase 1 fournit le site public, l’authentification et l’espace étudiant, la taxonomie scolaire initiale et sa migration. La Phase 2 ajoute les espaces parent, enseignant et administration, les soumissions, les liens parent-enfant et leurs politiques. Ces capacités et leurs routes doivent rester intactes. Le README du dépôt précise que les migrations Phase 1 et Phase 2 sont livrées mais qu’aucune n’a été appliquée sur une base réelle. Au contrôle du 16 novembre 2026, `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` sont absentes; aucune base ni Storage cible ne peut donc être testée ou modifiée dans le cadre de la proposition.
 
-**Prérequis constatés :** `webdev.config` n’a actuellement aucun secret déclaré; les variables `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` et `VITE_SUPABASE_GOOGLE_OAUTH_ENABLED` sont absentes. La migration Phase 1 est livrée mais son application réelle reste à confirmer. Aucune migration Phase 2 ne peut être testée contre une base réelle avant configuration et reconnaissance du projet Supabase cible.
+## Objectif et limites de la Phase 3
 
-## Périmètre fonctionnel Phase 2
+Construire uniquement le système pédagogique de contenus : taxonomie configurable, cours/leçons publiés, bibliothèque, vidéos externes, progression de lecture, favoris et historique, workflow d’administration et soumissions enseignant. Conserver les phases antérieures et rester compatible avec les parents et enseignants existants. Ne pas implémenter les examens complets, corrections, évaluations élèves ni EduAI. Les exercices déjà proposés par les enseignants restent des soumissions éditoriales; aucun moteur d’exercice n’est créé.
 
-### Espaces parent et association d’enfants
+Les matières ne seront pas codées en dur ni limitées à un nombre fixe. La nouvelle base pourra contenir autant de pays, systèmes, matières et chapitres que l’administration en configure. Les niveaux/classes et séries déjà présents (dont CP1, CP2, CE1, CE2, CM1, CM2, 6e, 5e, 4e, 3e, 2nde, 1re, Terminale et A/C/D pour le système déjà semé) seront conservés; ils ne seront pas présentés comme un programme officiel universel. Il ne sera pas ajouté de matières de démonstration.
 
-- Ajouter les profils parents, les routes et le tableau de bord parent; permettre plusieurs liens enfants.
-- Parcours proposé : l’élève connecté génère un code d’invitation aléatoire, à usage unique et à courte durée de vie; le parent connecté dépose une demande avec ce code; l’élève confirme ou refuse; la liaison n’est active qu’après cette confirmation. Le code brut n’est jamais stocké; le serveur n’en stocke qu’un hash. Une demande en attente ne révèle ni profil ni progression et la suppression d’une liaison révoque les droits immédiatement.
-- Le lien prouve le contrôle des deux comptes EduFlow, mais n’est pas présenté comme une vérification juridique de tutelle ou de consentement légal. Ces exigences dépendent des règles applicables et doivent être définies par le propriétaire avant une ouverture publique aux mineurs.
-- Le parent ne peut lire des informations d’un élève qu’au moyen d’une liaison active. Fournir les vues des objectifs, progrès et difficultés, rapports période semaine/mois et notifications en appliquant cette même règle côté base.
-- Les résultats EduFlow, chapitres terminés, difficultés et progression sont calculés exclusivement à partir d’enregistrements réels. Puisque les cours relèvent de la Phase 3 et le moteur d’exercices/examens de la Phase 4 selon le cahier, les vues afficheront un état vide honnête tant que ces données n’existent pas; aucun résultat d’essai ni système pédagogique ne sera simulé.
+## Approche de données et migrations
 
-### Espace enseignant et contenus à réviser
+Créer une migration Supabase versionnée, strictement additive pour les données. Elle réutilise `education_systems`, `school_levels`, `school_classes` et `school_series` au lieu de créer une deuxième taxonomie. Comme Phase 1 rend actuellement `country_code` unique dans `education_systems`, la migration ajoutera un référentiel de pays et modifiera prudemment la contrainte d’unicité de façon à permettre plusieurs systèmes éducatifs pour un même pays, sans supprimer ni réécrire les systèmes existants. Elle ajoutera une association explicite classe-série afin que les séries ne soient proposées que là où elles s’appliquent.
 
-- Ajouter demande de rôle/validation enseignant, profil, présentation et matières/niveaux déclarés; aucune auto-attribution du rôle `teacher`.
-- Permettre des contributions de type proposition de cours, ressource PDF/vidéo et exercice, avec métadonnées et fichiers dans un espace Supabase Storage privé. Les propositions d’exercice sont des dépôts éditoriaux uniquement : pas de moteur élève ni de correction.
-- Cycle contrôlé en base et visible à l’enseignant : `draft` (brouillon) → `submitted` (soumis) → `in_review` (en examen) → `approved` (approuvé) ou `rejected` (refusé), avec retours de revue. Seul un admin peut examiner ou approuver. Une approbation de contribution ne crée ni ne publie un module pédagogique élève de Phase 3/4.
-- Statistiques fondées sur ses propres nombres réels (brouillons, soumissions, états); contribution gratuite, aucun abonnement ni paiement implémenté.
+Référentiel configurable à ajouter :
+
+- Pays et systèmes éducatifs, en conservant les identifiants et données existants.
+- Matières par système éducatif et association matière-classe, sans liste de matières codée en dur.
+- Chapitres par matière et classe, avec ordre, nom et état actif.
+
+Modèle pédagogique prévu : cours organisés par matière-classe, leçons rattachées à un cours et à un chapitre, ressources documentaires et vidéos rattachées à une leçon ou au référentiel concerné. Les leçons stockeront les champs structurés demandés : titre, description, objectifs, introduction, explications, définitions, exemples, formules, illustrations, exercices proposés sous forme éditoriale sans tentative ni correction automatisée, résumé et points importants; elles garderont auteur, statut, décideur et dates de validation. Les ressources auront des métadonnées PostgreSQL typées (catégorie, MIME, taille, nom, chemin, droits de téléchargement et rattachement). Les vidéos stockeront titre, description, URL externe, fournisseur, miniature, durée, classe, matière, chapitre et statut; aucune vidéo ne sera hébergée par EduFlow dans cette phase.
+
+Les choix de statut seront explicites : brouillon, soumis, en examen, approuvé/publié, refusé ou archivé selon le type d’enregistrement. Des tables distinctes stockeront les favoris et la progression/reprise (position/section pour les leçons, position et état de visionnage pour les vidéos); la page de lecture sauvegardera puis restaurera la section réellement consultée. Les événements de leçon réellement terminée pourront alimenter la progression parentale Phase 2 via une opération sécurisée; ils ne créeront jamais de résultat d’exercice ou d’examen.
+
+## Parcours et workflow
+
+### Élève
+
+Ajouter un catalogue de cours filtrable et recherchable selon le profil scolaire réel; pages de matière, chapitre et leçon; lecteur de leçon structuré; bibliothèque de PDF, documents, images, illustrations et fiches de révision; espace vidéo; favoris; historique et reprise. Les états vides seront honnêtes lorsque le programme ou le contenu publié n’existe pas. Les ressources seront téléchargeables uniquement si leur métadonnée et leur permission le permettent.
+
+### Enseignant
+
+Étendre les contributions Phase 2 pour déposer une proposition structurée de leçon/cours, ressource ou vidéo externe, l’enregistrer en brouillon et la soumettre. Présenter les états réellement enregistrés et les retours de revue. Un enseignant ne peut jamais valider, publier ou archiver du contenu; les contributions restent gratuites, sans paiement.
 
 ### Administration
 
-- Routes et tableau de bord admin avec agrégats issus de la base, liste des utilisateurs, étudiants, parents et enseignants, demandes de rôle, revue/validation enseignants et contributions, notifications in-app et journal append-only des actions.
-- Les mutations privilégiées passent par des RPC PostgreSQL `SECURITY DEFINER` limitées ou fonctions serveur vérifiant l’utilisateur appelant et son rôle `admin`; pas par de simples contrôles React ou des requêtes directes permissives.
-- Aucun compte admin ne sera créé par une inscription ou un champ public. Le premier admin doit être désigné par le propriétaire depuis un canal Supabase administrateur/SQL de confiance. Les écrans peuvent être codés avant cette action, mais l’admin réel et le test admin demandent un bootstrap manuel.
-- L’administration de matières détaillées, le CMS de leçons, les examens, paiements, réglages IA et statistiques de revenus restent hors Phase 2.
+Étendre l’espace admin par des interfaces de gestion du programme (pays/systèmes, niveaux/classes/séries, matières, association aux classes et chapitres) et un CMS de cours, leçons, ressources et vidéos. L’administration peut créer, modifier, organiser, examiner, approuver/publier et archiver. Les propositions des enseignants ne deviennent accessibles aux élèves qu’après une décision d’approbation explicite. Les actions et transitions importantes sont auditables. Les contenus déjà approuvés par le workflow Phase 2 ne seront pas automatiquement exposés comme leçons Phase 3 sans données structurées et validation Phase 3.
 
-### Notifications et rapports
+### Vidéos et stockage
 
-- Créer un centre in-app et des préférences. Les événements de comptes/liaisons, revue de contributions et annonces admin utilisent les destinataires explicitement autorisés; l’utilisateur ne lit et ne marque comme lue que sa propre notification, l’admin ne voit que les fonctions de gestion prévues.
-- Les bilans parentaux sont consultables pour une période hebdomadaire ou mensuelle et ne contiennent que les données réelles du ou des enfants liés. Dans ce plan, génération à la demande et notifications in-app uniquement; aucun envoi planifié par email/push ou tâche serveur n’est déclaré opérationnel (le cahier reporte ces canaux ultérieurement).
+La première version utilisera uniquement des URL vidéo externes explicitement prises en charge (intégration YouTube/Vimeo et, si sélectionné pendant l’implémentation, média direct HTTPS). Les domaines seront validés/allowlistés; la progression sera sauvegardée quand le lecteur fournit une position fiable. Aucun upload, stockage ou hébergement de vidéo ne sera revendiqué. Les miniatures pourront être des URL externes autorisées ou des images stockées comme ressources.
 
-## Architecture de données et autorisation
+Utiliser Supabase Storage pour PDF, documents et images, et PostgreSQL pour le catalogue et les métadonnées. Garder les buckets privés. Réutiliser le bucket privé de contributions enseignant pour les dépôts en attente et établir, au besoin, un bucket privé séparé pour les ressources publiées administrativement. Les chemins d’objet et politiques distingueront brouillons/contributions non publiés des fichiers de contenus approuvés. Les lectures/téléchargements passeront par les permissions Storage et des liens signés lorsque requis; ni URL permanente publique ni clé `service_role` côté client.
 
-La migration Phase 2 versionnée `supabase/migrations/20261114120000_phase2_user_spaces.sql` ajoute, sans effacer ni réécrire les lignes Phase 1, les tables `role_applications`, `parent_profiles`, `teacher_profiles`, `parent_invite_codes`, `parent_link_requests`, `parent_student_links`, `learning_goals`, `learning_activity`, `content_submissions`, `content_reviews`, `notifications`, `notification_preferences` et `admin_audit_logs`. Les matières/niveaux déclarés sont conservés sous forme de tableaux dans les profils et contributions, sans table `teacher_subjects`. Les types, contraintes, clés étrangères, index, états, RPC et chemins Storage sont versionnés. `learning_activity` est en lecture seule pour les clients et sert aux vues familiales; aucun événement pédagogique de démonstration n’est inséré.
+## Permissions et protection des données
 
-- Activer RLS sur chaque nouvelle table privée et appliquer des permissions minimales; le bucket enseignant reste privé avec contrôle d’accès par propriétaire et admin.
-- Les helpers vérifient rôle et liaison acceptée sans récursion RLS. Le client ne reçoit jamais `service_role` ni ne peut insérer un rôle, accepter sa propre demande d’enseignant, changer un contenu en approuvé, écrire un audit ou lire les enfants d’un autre parent.
-- Préserver les rôles multiples possibles : remplacer l’hypothèse d’un seul rôle dans `AuthContext` par une liste de rôles, et protéger chaque route par inclusion explicite du rôle requis; les guards restent un confort UX, RLS/RPC sont l’autorité.
-- Prévoir révocation d’une association, refus/expiration/rejeu impossible d’un code, absence d’énumération des élèves, accès minimal aux identifiants et journalisation des décisions admin sans dupliquer les données sensibles.
+Toutes les nouvelles tables activeront RLS. Les référentiels actifs pourront être lus par les visiteurs/élèves selon le besoin; leur création et modification resteront réservées à l’administration. Les élèves authentifiés ne consulteront que le contenu publié compatible avec leur système et classe, ainsi que leurs propres favoris et historique. Les parents n’accéderont toujours qu’aux enfants liés et aux événements pédagogiques réels autorisés. Les enseignants actifs ne liront et ne modifieront que leurs propres soumissions encore modifiables. L’interface admin est protégée côté route, mais RLS/RPC est l’autorité; les mutations sensibles utilisent des fonctions SQL vérifiant le rôle `admin`, les transitions autorisées, et journalisent les décisions. Aucun flux public ne permet l’auto-attribution du rôle admin.
 
-## Routes et structure
+Les migrations ne supprimeront pas les tables/données des phases précédentes et ne désactiveront jamais RLS. Les migrations seront livrées avec assertions/tests statiques locaux; leur exécution sur Supabase est une opération distincte qui attend la configuration et la confirmation du projet cible. Aucun test ne fera de write/delete sur une base partagée ou inconnue.
 
-Préserver les routes publiques et étudiantes déjà livrées. Routes Phase 2 réellement présentes : `/access-request`, `/student/parent-links`, `/parent/dashboard`, `/parent/children`, `/parent/progress`, `/parent/results`, `/parent/notifications`, `/parent/profile`, `/teacher/dashboard`, `/teacher/profile`, `/teacher/contributions`, `/teacher/courses`, `/teacher/resources`, `/teacher/statistics`, `/admin`, `/admin/users`, `/admin/students`, `/admin/parents`, `/admin/teachers`, `/admin/contributions`, `/admin/notifications`, `/admin/audit`. Les routes d’espace sont protégées par rôle dans le routeur et par RLS/RPC dans Supabase. `public/manus-routes.json` déclare toutes les pages réellement implémentées, sans route de 404.
+## Structure prévue du projet
 
 ```text
 src/
-  app/                         # AuthContext, guards, routes et route manifest consommé
-  features/
-    access/                    # demande parent/enseignant, sans voie publique admin
-    parents/                   # code enfant, confirmation, progrès, résultats, objectifs, notifications
-    teachers/                  # profil, dépôts, cours/ressources, statuts et statistiques
-    administration/            # utilisateurs, demandes, revue, notifications et audit
-  layouts/                     # shells responsive rôle par rôle, bascule et déconnexion
-  lib/                         # client Supabase, validation et tests statiques de migration
-  types/                       # rôles multiples, tables et RPC Supabase typés
-  styles.css                   # tokens communs et styles mobile-first
-supabase/
-  migrations/                  # migrations versionnées, additives, non appliquées
+  app/                              # auth, routes et guards existants préservés
+  features/learning/                # catalogue, matière, chapitre, leçon, bibliothèque, vidéos
+  features/students/                # dashboard conservé; favoris, historique et progression
+  features/teachers/                # contributions Phase 2 étendues aux contenus Phase 3
+  features/administration/           # administration existante + programme et CMS
+  layouts/                          # shells existants, extensions de navigation par rôle
+  lib/                              # client Supabase, validations et tests statiques SQL
+  types/database.ts                 # schéma généré/typé étendu sans effacer les types existants
+  styles.css                        # identité partagée, nouveaux composants mobile-first
+supabase/migrations/                # migration Phase 3 additive et versionnée
+public/manus-routes.json            # manifeste synchronisé avec toutes les routes de pages
 ```
 
-Réutiliser le logo, la palette et les motifs de Phase 1. Les shells de chaque rôle doivent rester responsives, les navigations inutiles masquées par espace. Ne pas ajouter de graphiques ou compteurs sans données.
+Les dépendances existantes suffisent en principe (React, TypeScript, Supabase JS, Lucide, Vitest); n’ajouter un lecteur SDK de fournisseur vidéo que si le choix final l’exige et après vérification de compatibilité. Les variables client restent les seules variables Supabase exposées au navigateur : `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY`. Pas de secret serveur nécessaire pour le parcours décrit.
 
-## Dépendances, sûreté et limite d’exécution
+## Direction visuelle conservée et appliquée
 
-Le front-end actuel reste en React/Vite; `@supabase/supabase-js` et les tests sont déjà installés. Utiliser Supabase Auth, PostgreSQL/RLS et Storage au lieu d’activer les services Manus désactivés. Ne demander aucun secret dans le chat; les clés publiables doivent être saisies par la configuration protégée, et aucune clé secrète/service-role n’est nécessaire dans le frontend.
+- **Mouvement :** EdTech éditoriale contemporaine, claire et rassurante, issue du logo EduFlow.
+- **Principes :** lisibilité d’abord, mobile prioritaire, contenu hiérarchisé, états honnêtes et confiance dans les accès.
+- **Couleurs :** bleu nuit `#172554` pour la structure, bleu `#2563EB` pour l’action et la navigation, jaune `#FBBF24` comme accent mémorable, vert `#16A34A` pour les validations; blanc et gris clair pour une lecture calme.
+- **Disposition :** parcours vertical lisible sur smartphone, navigation latérale repliable sur grand écran, filtres accessibles et contenu principal dégagé; éviter les tableaux denses sur mobile.
+- **Éléments signatures :** ruban de progression, accents courbes inspirés du livre du logo, petits repères de couleur par état/statut.
+- **Interactions/animation :** retours d’état immédiats et explicites, lecture sauvegardable, contrôles accessibles; transitions courtes et discrètes respectant `prefers-reduced-motion`.
+- **Typographie :** Inter ou police système équivalente pour l’interface; titres sobres en échelle régulière, textes de leçon généreusement espacés et largeur de lecture maîtrisée.
+- **Essence de marque :** « La plateforme qui relie programmes structurés, leçons accessibles et ressources vérifiées pour les élèves et leurs accompagnants. » Personnalité : claire, encourageante, fiable.
+- **Voix :** directe, bienveillante, non infantilisante. Exemples : « Reprends là où tu t’étais arrêté. » « Cette leçon n’est pas encore publiée. »
+- **Logo :** réutiliser le logo fourni et ses motifs de livre ouvert/cap; ne pas le remplacer par un pictogramme générique.
+- **Couleur signature :** bleu EduFlow `#2563EB`, accompagné du jaune du logo.
 
-La migration Phase 2 est livrée et contrôlée statiquement, mais n’a pas été appliquée : aucune instance Supabase n’était configurée et aucune ligne de production/dev n’a été modifiée. Les paramètres `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` ainsi que les comptes de rôles sont requis pour les tests Auth/RLS live; ces vérifications restent bloquées et ne sont pas simulées. Aucun déploiement public, email/push ou tâche planifiée n’est configuré. Les moteurs élève de cours/leçons/exercices/examens, EduAI, abonnements/paiements et progression artificielle restent hors Phase 2.
+## Préconditions et limites d’intégration
 
-## Direction visuelle conservée de Phase 1
-
-Identité éducative numérique rassurante, lumineuse et contemporaine, issue du logo fourni. Palette : bleu nuit `#172554`, bleu EduFlow `#2563EB`, jaune `#FBBF24`, vert `#16A34A`, blanc et gris `#F1F5F9`. Principes : mobile d’abord, lecture claire, confiance/sobriété, langage pédagogique précis, états vides honnêtes. Réutiliser les cartes arrondies, ombres discrètes et accents en courbes/rubans de progression; animations courtes respectueuses de `prefers-reduced-motion`; police Inter ou système équivalent. Voix encourageante et directe. Aucun symbole ou nom de pays dans l’identité.
+Au dernier contrôle, les deux paramètres Supabase sont absents, le dépôt indique que les migrations précédentes ne sont pas appliquées et il n’existe pas de base/Storage de test confirmé. La phase peut être codée et contrôlée localement sans cela, mais inscription/connexion, politiques RLS, Storage, cours avec données réelles et tests d’accès par rôles resteront non vérifiés en live jusqu’à configuration de Supabase et application ordonnée des migrations 1, 2 puis 3 sur l’instance EduFlow vérifiée. Aucun déploiement Vercel ou publication publique n’est inclus dans cette phase.
