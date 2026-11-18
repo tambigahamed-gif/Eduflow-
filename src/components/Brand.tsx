@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export const EDUSCHOLE_LOGO_SRC = '/manus-storage/eduschole-logo_a546dae3.png';
+export const EDUSCHOLE_LOGO_SRC = '/eduschole-logo.png';
 export const EDUSCHOLE_ICON_SRC = '/eduschole-icon.png';
 
 type BrandProps = {
